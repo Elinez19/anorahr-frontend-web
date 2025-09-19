@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Clock, Award, Users, Zap } from "lucide-react";
 import type { TeamMember } from "@/types";
+import Container from "@/components/custom/Container";
 
 const stats = [
   {
@@ -100,7 +101,7 @@ const About: React.FC = () => {
 
   return (
     <section id="about" className="section bg-white">
-      <div className="container">
+      <Container padding="lg">
         <div className="text-center mb-16">
           <div className="inline-block mb-3 px-4 py-1 rounded-full bg-mint-100 text-mint-700 font-medium text-sm">
             About Us
@@ -208,7 +209,7 @@ const About: React.FC = () => {
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 };

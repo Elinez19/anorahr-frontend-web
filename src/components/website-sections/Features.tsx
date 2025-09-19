@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import type { Feature } from "@/types";
+import Container from "@/components/custom/Container";
 import {
   Code,
   Rocket,
@@ -87,7 +88,7 @@ const Features: React.FC = () => {
 
   return (
     <section id="features" className="section bg-white">
-      <div className="container">
+      <Container padding="lg">
         <div className="text-center mb-16">
           <div className="inline-block mb-3 px-4 py-1 rounded-full bg-mint-100 text-mint-700 font-medium text-sm">
             Our Features
@@ -127,7 +128,7 @@ const Features: React.FC = () => {
             <Zap size={18} className="ml-2" />
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

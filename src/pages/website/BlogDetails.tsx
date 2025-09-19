@@ -332,7 +332,8 @@ const BlogDetails: React.FC = () => {
                             <button
                               type="submit"
                               disabled={!newComment.trim()}
-                              className="flex items-center gap-2 px-4 py-2 bg-mint-600 text-white rounded-lg hover:bg-mint-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                              className="flex items-center gap-2 px-8 py-3 h-12 bg-mint-500 text-white hover:bg-mint-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-500 focus-visible:ring-offset-2"
+                              style={{ borderRadius: "9999px" }}
                             >
                               <Send size={16} />
                               Post Comment
@@ -409,7 +410,8 @@ const BlogDetails: React.FC = () => {
                                           disabled={
                                             !newReply[comment.id]?.trim()
                                           }
-                                          className="flex items-center gap-1 px-3 py-1 bg-mint-600 text-white rounded text-sm hover:bg-mint-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                          className="flex items-center gap-1 px-6 py-2 h-10 bg-mint-500 text-white text-sm hover:bg-mint-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-500 focus-visible:ring-offset-2"
+                                          style={{ borderRadius: "9999px" }}
                                         >
                                           <Send size={12} />
                                           Reply
@@ -502,7 +504,7 @@ const BlogDetails: React.FC = () => {
                         <Link
                           key={tag}
                           to={`/blog?tag=${tag}`}
-                          className="text-xs bg-mint-50 text-mint-600 px-3 py-1 rounded-full hover:bg-mint-100 transition-colors"
+                          className="text-xs bg-mint-50 text-mint-700 px-3 py-1 rounded-full hover:bg-mint-100 hover:text-mint-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-500 focus-visible:ring-offset-2"
                         >
                           {tag}
                         </Link>

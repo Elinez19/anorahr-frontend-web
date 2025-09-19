@@ -52,13 +52,15 @@ const FAQGrid: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center px-6 py-3 bg-mint-600 text-white font-medium rounded-lg hover:bg-mint-700 transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 h-12 bg-mint-500 text-white font-medium hover:bg-mint-600 transition-colors shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-500 focus-visible:ring-offset-2"
+                style={{ borderRadius: "9999px" }}
               >
                 Contact Us
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center px-6 py-3 border border-midnight-200 text-midnight-700 font-medium rounded-lg hover:bg-midnight-50 transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 h-12 border border-mint-200 bg-white text-mint-700 font-medium hover:bg-mint-50 hover:text-mint-800 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-500 focus-visible:ring-offset-2"
+                style={{ borderRadius: "9999px" }}
               >
                 View Our Services
               </Link>

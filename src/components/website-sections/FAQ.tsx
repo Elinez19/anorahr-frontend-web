@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { FAQItem } from "@/types";
+import Container from "@/components/custom/Container";
 
 const faqItems: FAQItem[] = [
   {
@@ -76,7 +77,7 @@ const FAQAccordion: React.FC = () => {
 
   return (
     <section id="faq" className="section bg-midnight-50">
-      <div className="container">
+      <Container padding="lg">
         <div className="text-center mb-16">
           <div className="inline-block mb-3 px-4 py-1 rounded-full bg-mint-100 text-mint-700 font-medium text-sm">
             FAQ
@@ -132,7 +133,7 @@ const FAQAccordion: React.FC = () => {
             Contact Us
           </a>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

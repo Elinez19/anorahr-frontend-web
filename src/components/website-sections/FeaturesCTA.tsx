@@ -4,8 +4,8 @@ import Container from "@/components/custom/Container";
 
 const FeaturesCTA: React.FC = () => {
   return (
-    <section className="bg-midnight-50 py-20">
-      <Container>
+    <section className="section bg-midnight-50">
+      <Container padding="lg">
         <div className="text-center max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-midnight-900 mb-6">
             Ready to Get Started?

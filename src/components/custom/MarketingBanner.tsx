@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { X, Mail, Gift, Star, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import { X, Mail, Gift, Star, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MarketingBannerProps {
-  type: 'newsletter' | 'offer' | 'promotion';
+  type: "newsletter" | "offer" | "promotion";
   title: string;
   description: string;
   ctaText: string;
@@ -19,9 +19,9 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
   ctaText,
   onClose,
   onSubmit,
-  isVisible
+  isVisible,
 }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,10 +30,10 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
       setIsSubmitting(true);
       try {
         await onSubmit(email);
-        setEmail('');
+        setEmail("");
         onClose();
       } catch (error) {
-        console.error('Error submitting:', error);
+        console.error("Error submitting:", error);
       } finally {
         setIsSubmitting(false);
       }
@@ -42,11 +42,11 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
 
   const getIcon = () => {
     switch (type) {
-      case 'newsletter':
+      case "newsletter":
         return <Mail className="w-6 h-6" />;
-      case 'offer':
+      case "offer":
         return <Gift className="w-6 h-6" />;
-      case 'promotion':
+      case "promotion":
         return <Star className="w-6 h-6" />;
       default:
         return <Mail className="w-6 h-6" />;
@@ -55,14 +55,14 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
 
   const getBgColor = () => {
     switch (type) {
-      case 'newsletter':
-        return 'bg-gradient-to-r from-mint-600 to-mint-700';
-      case 'offer':
-        return 'bg-gradient-to-r from-orange-500 to-red-500';
-      case 'promotion':
-        return 'bg-gradient-to-r from-purple-600 to-pink-600';
+      case "newsletter":
+        return "bg-gradient-to-b from-pink-500 to-purple-600";
+      case "offer":
+        return "bg-gradient-to-b from-pink-500 to-purple-600";
+      case "promotion":
+        return "bg-gradient-to-b from-pink-500 to-purple-600";
       default:
-        return 'bg-gradient-to-r from-mint-600 to-mint-700';
+        return "bg-gradient-to-b from-pink-500 to-purple-600";
     }
   };
 
@@ -78,16 +78,18 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
             className="fixed inset-0 bg-black bg-opacity-50 z-50"
             onClick={onClose}
           />
-          
+
           {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md mx-4"
           >
-            <div className={`${getBgColor()} rounded-2xl shadow-2xl overflow-hidden`}>
+            <div
+              className={`${getBgColor()} rounded-2xl shadow-2xl overflow-hidden`}
+            >
               {/* Header */}
               <div className="relative p-6 text-white">
                 <button
@@ -96,22 +98,23 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
                 >
                   <X size={20} />
                 </button>
-                
+
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-white bg-opacity-20 rounded-full">
-                    {getIcon()}
+                  <div className="p-2 bg-purple-300 rounded-full">
+                    <Star className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">{title}</h3>
+                    <h3 className="text-xl font-bold">Wait! Don't Miss Out</h3>
                   </div>
                 </div>
-                
-                <p className="text-white text-opacity-90 mb-6">
-                  {description}
+
+                <p className="text-white mb-6">
+                  Get a free consultation and project quote before you go. No
+                  obligation, just expert advice.
                 </p>
 
                 {/* Newsletter Form */}
-                {type === 'newsletter' && (
+                {type === "newsletter" && (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <input
@@ -126,13 +129,14 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
                     <button
                       type="submit"
                       disabled={isSubmitting || !email.trim()}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white text-midnight-900 font-semibold rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full flex items-center justify-center gap-2 px-8 py-3 h-12 bg-white text-gray-800 font-semibold hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                      style={{ borderRadius: "9999px" }}
                     >
                       {isSubmitting ? (
-                        'Subscribing...'
+                        "Subscribing..."
                       ) : (
                         <>
-                          {ctaText}
+                          Get Free Quote
                           <ArrowRight size={16} />
                         </>
                       )}
@@ -141,18 +145,19 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
                 )}
 
                 {/* Offer/Promotion CTA */}
-                {type !== 'newsletter' && (
+                {type !== "newsletter" && (
                   <div className="space-y-4">
                     <button
                       onClick={onClose}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white text-midnight-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+                      className="w-full flex items-center justify-center gap-2 px-8 py-3 h-12 bg-white text-gray-800 font-semibold hover:bg-gray-100 transition-colors shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                      style={{ borderRadius: "9999px" }}
                     >
-                      {ctaText}
+                      Get Free Quote
                       <ArrowRight size={16} />
                     </button>
                     <button
                       onClick={onClose}
-                      className="w-full px-6 py-2 text-white text-opacity-80 hover:text-white transition-colors"
+                      className="w-full px-6 py-2 text-white hover:text-white transition-colors text-center"
                     >
                       Maybe later
                     </button>
@@ -167,4 +172,4 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
   );
 };
 
-export default MarketingBanner; 
+export default MarketingBanner;

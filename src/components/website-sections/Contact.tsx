@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Send, Mail, Phone, MapPin, Check } from "lucide-react";
+import Container from "@/components/custom/Container";
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -44,7 +45,7 @@ const Contact: React.FC = () => {
       id="contact"
       className="section bg-gradient-to-br from-midnight-900 to-midnight-950 text-white"
     >
-      <div className="container">
+      <Container padding="lg">
         <div className="text-center mb-16">
           <div className="inline-block mb-3 px-4 py-1 rounded-full bg-midnight-800 text-mint-400 font-medium text-sm">
             Get In Touch
@@ -262,7 +263,7 @@ const Contact: React.FC = () => {
                         message: "",
                       });
                     }}
-                    className="btn btn-outline border-midnight-700 text-white hover:bg-midnight-700"
+                    className="btn btn-outline"
                   >
                     Send Another Message
                   </button>
@@ -271,7 +272,7 @@ const Contact: React.FC = () => {
             </div>
           </div>
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 };

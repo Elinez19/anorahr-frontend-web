@@ -10,6 +10,7 @@ export const ROUTE_PATHS = {
   ABOUT: ROUTES.ABOUT,
   CONTACT: ROUTES.CONTACT,
   FAQ: ROUTES.FAQ,
+  DASHBOARD: ROUTES.DASHBOARD,
   // Detail routes
   FEATURES_DETAILS: "/features/:featureSlug",
   SERVICES_ABUJA: "/services/abuja",
@@ -86,6 +87,18 @@ export const ROUTE_METADATA = {
     description:
       "Find answers to frequently asked questions about our services and process.",
     keywords: ["FAQ", "questions", "services", "process"],
+  },
+  [ROUTE_PATHS.DASHBOARD]: {
+    title: "Dashboard - AnoraHR",
+    description:
+      "Access your HR dashboard to manage contacts, view analytics, and oversee your organization's HR operations.",
+    keywords: [
+      "dashboard",
+      "HR management",
+      "contacts",
+      "analytics",
+      "HR operations",
+    ],
   },
   "/services/abuja": {
     title: "HR Software in Abuja - AnoraHR",

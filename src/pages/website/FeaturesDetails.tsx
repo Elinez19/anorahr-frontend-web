@@ -10,7 +10,6 @@ import {
   TrendingUp,
   Users as UsersIcon,
 } from "lucide-react";
-import SEO from "@/components/custom/SEO";
 import Container from "@/components/custom/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -182,12 +181,6 @@ const FeaturesDetails: React.FC = () => {
   if (!service) {
     return (
       <>
-        <SEO
-          title="Feature Not Found"
-          description="The feature you're looking for doesn't exist."
-          url="/services/not-found"
-          type="website"
-        />
         <main className="pt-20">
           <Container>
             <div className="text-center py-20">
@@ -212,23 +205,6 @@ const FeaturesDetails: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title={`${service.title} - AnoraHR`}
-        description={service.description}
-        keywords={[
-          service.title.toLowerCase().replace(" ", "-"),
-          "Recruitment",
-          "Payroll",
-          "Performance Management",
-          "Leave Management",
-          "Talent Management",
-          "E-Learning",
-          "Attendance Management",
-          "Succession Planning",
-        ]}
-        url={`/features/${serviceSlug}`}
-        type="website"
-      />
       <main className="pt-20">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-midnight-900 to-mint-600 text-white py-20">

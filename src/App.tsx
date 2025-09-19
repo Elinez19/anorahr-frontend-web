@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Header from "@/layout/Header";
 import Footer from "@/layout/Footer";
 import Home from "@/pages/website/Home";
@@ -14,12 +18,14 @@ import Testimonials from "@/pages/website/Testimonials";
 import About from "@/pages/website/About";
 import Contact from "@/pages/website/Contact";
 import FAQ from "@/pages/website/FAQ";
-import { ROUTE_PATHS } from "@/routes";
+import { Dashboard } from "@/routes.tsx";
+import { ROUTE_PATHS } from "@/routes/index";
 import JivoChat from "@/components/custom/JivoChat";
 import { CHAT_CONFIG } from "@/constants";
 
 function AppContent() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const prefersDark = window.matchMedia(
@@ -36,9 +42,14 @@ function AppContent() {
     document.documentElement.classList.toggle("dark");
   };
 
+  // Check if current route is dashboard
+  const isDashboard = location.pathname === ROUTE_PATHS.DASHBOARD;
+
   return (
     <div className={`${isDarkMode ? "dark" : ""}`}>
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+      {!isDashboard && (
+        <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+      )}
       <Routes>
         <Route path={ROUTE_PATHS.HOME} element={<Home />} />
         <Route path={ROUTE_PATHS.FEATURES} element={<Features />} />
@@ -58,8 +69,9 @@ function AppContent() {
         <Route path={ROUTE_PATHS.ABOUT} element={<About />} />
         <Route path={ROUTE_PATHS.CONTACT} element={<Contact />} />
         <Route path={ROUTE_PATHS.FAQ} element={<FAQ />} />
+        <Route path={ROUTE_PATHS.DASHBOARD} element={<Dashboard />} />
       </Routes>
-      <Footer />
+      {!isDashboard && <Footer />}
       {CHAT_CONFIG.enabled && <JivoChat widgetId={CHAT_CONFIG.jivoWidgetId} />}
     </div>
   );
@@ -67,11 +79,9 @@ function AppContent() {
 
 function App() {
   return (
-    <HelmetProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </HelmetProvider>
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

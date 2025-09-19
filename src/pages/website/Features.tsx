@@ -1,5 +1,4 @@
 import React from "react";
-import SEO from "@/components/custom/SEO";
 import FeaturesCTA from "@/components/website-sections/FeaturesCTA";
 import MarketingBanner from "@/components/custom/MarketingBanner";
 import { useScrollTrigger } from "@/hooks/useScrollTrigger";
@@ -32,21 +31,6 @@ const Features: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title="Our Features"
-        description="Empower Employees With
-Our People Features"
-        keywords={[
-          "Recruitment",
-          "Payroll",
-          "Performance Management",
-          "Leave Management",
-          "Talent Management",
-          "E-Learning",
-        ]}
-        url="/features"
-        type="website"
-      />
       <main className="pt-20">
         <FeaturesHero />
         <FeaturesGrid />

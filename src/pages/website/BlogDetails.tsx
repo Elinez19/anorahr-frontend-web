@@ -9,7 +9,6 @@ import {
   MessageCircle,
   Send,
 } from "lucide-react";
-import SEO from "@/components/custom/SEO";
 import Container from "@/components/custom/Container";
 import { Card } from "@/components/ui/Card";
 import type { BlogPost } from "@/types";
@@ -200,26 +199,6 @@ const BlogDetails: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title={blogPost.title}
-        description={blogPost.excerpt}
-        keywords={[
-          ...blogPost.tags,
-          "web development",
-          "technology",
-          "trends",
-          "blog",
-          "article",
-        ]}
-        url={`/blog/${blogPost.slug}`}
-        type="article"
-        author={blogPost.author}
-        publishedTime={blogPost.date}
-        modifiedTime={blogPost.date}
-        section="Technology"
-        tags={blogPost.tags}
-        image={blogPost.image}
-      />
       <main className="pt-20">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-midnight-900 to-mint-600 text-white py-20">

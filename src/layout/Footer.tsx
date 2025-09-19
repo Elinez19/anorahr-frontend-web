@@ -9,7 +9,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ROUTE_PATHS } from "@/routes";
+import { ROUTE_PATHS } from "@/routes/index";
 import { SOCIAL_LINKS, CONTACT_INFO } from "@/constants";
 
 const Footer: React.FC = () => {

@@ -1,5 +1,4 @@
 import React from "react";
-import SEO from "@/components/custom/SEO";
 import Hero from "@/components/website-sections/Hero";
 import Features from "@/components/website-sections/Features";
 import FeaturesSection from "@/components/website-sections/Features-Section";
@@ -55,22 +54,6 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title="The HR & People Software - AnoraHR"
-        description="Leading software development agency in Nigeria serving Abuja, Ado Ekiti. Expert web development, mobile apps, digital solutions. Best software company in Nigeria."
-        keywords={[
-          "best software development agency Nigeria",
-          "software company Abuja",
-          "web development Ado Ekiti",
-          "mobile app development Nigeria",
-          "digital solutions Nigeria",
-          "best software company Nigeria",
-          "technology services Abuja",
-          "software development FCT",
-        ]}
-        url="/"
-        type="website"
-      />
       <main>
         <Hero />
         <Features />

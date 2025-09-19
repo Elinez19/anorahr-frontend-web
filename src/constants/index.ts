@@ -17,6 +17,7 @@ export const ROUTES = {
   ABOUT: "/about",
   CONTACT: "/contact",
   FAQ: "/faq",
+  DASHBOARD: "/dashboard",
 } as const;
 
 // Navigation items for the main menu

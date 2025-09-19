@@ -13,7 +13,6 @@ import {
   Cloud,
   Check,
 } from "lucide-react";
-import SEO from "@/components/custom/SEO";
 import Container from "@/components/custom/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -181,12 +180,6 @@ const HowItWorksDetails: React.FC = () => {
   if (!project) {
     return (
       <>
-        <SEO
-          title="Project Not Found"
-          description="The project you're looking for doesn't exist."
-          url="/how-it-works/not-found"
-          type="website"
-        />
         <main className="pt-20">
           <Container>
             <div className="text-center py-20">
@@ -225,23 +218,6 @@ const HowItWorksDetails: React.FC = () => {
 
   return (
     <>
-      <SEO
-        title={`${project.title} - Portfolio Project`}
-        description={project.description}
-        keywords={[
-          project.title.toLowerCase().replace(" ", "-"),
-          project.tag.toLowerCase(),
-          "portfolio",
-          "case study",
-          "web development",
-          "mobile development",
-          "project",
-          "client work",
-        ]}
-        url={`/how-it-works/${projectSlug}`}
-        type="website"
-        image={project.image}
-      />
       <main className="pt-20">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-midnight-900 to-mint-600 text-white py-20">

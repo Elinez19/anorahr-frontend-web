@@ -3,7 +3,7 @@ import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS, MEGA_MENU_ITEMS, COMPANY_INFO } from "@/constants";
-import { ROUTE_PATHS } from "@/routes";
+import { ROUTE_PATHS } from "@/routes/index";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {

@@ -174,7 +174,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
         <div className="font-medium">{row.getValue("name")}</div>
       </div>
     ),
-    size: 180,
+    size: 200,
+    minSize: 150,
     enableHiding: false,
   },
   {
@@ -183,7 +184,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
     cell: ({ row }) => (
       <span className="text-muted-foreground">{row.getValue("id")}</span>
     ),
-    size: 110,
+    size: 120,
+    minSize: 100,
   },
   {
     header: "Status",
@@ -211,7 +213,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
         </Badge>
       </div>
     ),
-    size: 110,
+    size: 120,
+    minSize: 100,
     filterFn: statusFilterFn,
   },
   {
@@ -220,7 +223,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
     cell: ({ row }) => (
       <span className="text-muted-foreground">{row.getValue("location")}</span>
     ),
-    size: 140,
+    size: 160,
+    minSize: 120,
   },
   {
     header: "Verified",
@@ -241,7 +245,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
         />
       </div>
     ),
-    size: 90,
+    size: 100,
+    minSize: 80,
   },
   {
     header: "Referral",
@@ -260,7 +265,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
         </div>
       </div>
     ),
-    size: 140,
+    size: 160,
+    minSize: 120,
   },
   {
     header: "Value",
@@ -282,7 +288,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
         </TooltipProvider>
       );
     },
-    size: 80,
+    size: 100,
+    minSize: 80,
   },
   {
     id: "actions",
@@ -290,7 +297,8 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
     cell: ({ row }) => (
       <RowActions setData={setData} data={data} item={row.original} />
     ),
-    size: 60,
+    size: 70,
+    minSize: 60,
     enableHiding: false,
   },
 ];
@@ -557,189 +565,18 @@ export default function ContactsTable() {
       </div>
 
       {/* Table */}
-      <Table
-        className="[&_td]:border-border [&_th]:border-border table-fixed border-separate border-spacing-0 [&_tfoot_td]:border-t [&_th]:border-b [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b"
-        style={{
-          width: table.getTotalSize(),
-        }}
-      >
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="bg-muted/50">
-              {headerGroup.headers.map((header) => {
-                const { column } = header;
-                const isPinned = column.getIsPinned();
-                const isLastLeftPinned =
-                  isPinned === "left" && column.getIsLastColumn("left");
-                const isFirstRightPinned =
-                  isPinned === "right" && column.getIsFirstColumn("right");
-
-                return (
-                  <TableHead
-                    key={header.id}
-                    className="[&[data-pinned][data-last-col]]:border-border data-pinned:bg-muted/90 relative h-10 truncate border-t data-pinned:backdrop-blur-xs [&:not([data-pinned]):has(+[data-pinned])_div.cursor-col-resize:last-child]:opacity-0 [&[data-last-col=left]_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right]:last-child_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=right][data-last-col=right]]:border-l"
-                    colSpan={header.colSpan}
-                    style={{ ...getPinningStyles(column) }}
-                    data-pinned={isPinned || undefined}
-                    data-last-col={
-                      isLastLeftPinned
-                        ? "left"
-                        : isFirstRightPinned
-                        ? "right"
-                        : undefined
-                    }
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="truncate">
-                        {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                          <div
-                            className={cn(
-                              header.column.getCanSort() &&
-                                "flex h-full cursor-pointer select-none items-center gap-2"
-                            )}
-                            onClick={header.column.getToggleSortingHandler()}
-                            onKeyDown={(e) => {
-                              if (
-                                header.column.getCanSort() &&
-                                (e.key === "Enter" || e.key === " ")
-                              ) {
-                                e.preventDefault();
-                                header.column.getToggleSortingHandler()?.(e);
-                              }
-                            }}
-                            tabIndex={
-                              header.column.getCanSort() ? 0 : undefined
-                            }
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {{
-                              asc: (
-                                <RiArrowUpSLine
-                                  className="shrink-0 opacity-60"
-                                  size={16}
-                                  aria-hidden="true"
-                                />
-                              ),
-                              desc: (
-                                <RiArrowDownSLine
-                                  className="shrink-0 opacity-60"
-                                  size={16}
-                                  aria-hidden="true"
-                                />
-                              ),
-                            }[header.column.getIsSorted() as string] ?? null}
-                          </div>
-                        ) : (
-                          flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )
-                        )}
-                      </span>
-                      {/* Pin/Unpin column controls */}
-                      {!header.isPlaceholder &&
-                        header.column.getCanPin() &&
-                        (header.column.getIsPinned() ? (
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="-mr-1 size-7 shadow-none"
-                            onClick={() => header.column.pin(false)}
-                            aria-label={`Unpin ${
-                              header.column.columnDef.header as string
-                            } column`}
-                            title={`Unpin ${
-                              header.column.columnDef.header as string
-                            } column`}
-                          >
-                            <PinOffIcon
-                              className="opacity-60"
-                              size={16}
-                              aria-hidden="true"
-                            />
-                          </Button>
-                        ) : (
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                className="-mr-1 size-7 shadow-none"
-                                aria-label={`Pin options for ${
-                                  header.column.columnDef.header as string
-                                } column`}
-                                title={`Pin options for ${
-                                  header.column.columnDef.header as string
-                                } column`}
-                              >
-                                <EllipsisIcon
-                                  className="opacity-60"
-                                  size={16}
-                                  aria-hidden="true"
-                                />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() => header.column.pin("left")}
-                              >
-                                <ArrowLeftToLineIcon
-                                  size={16}
-                                  className="opacity-60"
-                                  aria-hidden="true"
-                                />
-                                Stick to left
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => header.column.pin("right")}
-                              >
-                                <ArrowRightToLineIcon
-                                  size={16}
-                                  className="opacity-60"
-                                  aria-hidden="true"
-                                />
-                                Stick to right
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        ))}
-                      {header.column.getCanResize() && (
-                        <div
-                          {...{
-                            onDoubleClick: () => header.column.resetSize(),
-                            onMouseDown: header.getResizeHandler(),
-                            onTouchStart: header.getResizeHandler(),
-                            className:
-                              "absolute top-0 h-full w-4 cursor-col-resize user-select-none touch-none -right-2 z-10 flex justify-center before:absolute before:w-px before:inset-y-0 before:bg-border before:-translate-x-px",
-                          }}
-                        />
-                      )}
-                    </div>
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <tbody aria-hidden="true" className="table-row h-1"></tbody>
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                Loading...
-              </TableCell>
-            </TableRow>
-          ) : table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => {
-                  const { column } = cell;
+      <div className="rounded-lg border border-border bg-card shadow-sm overflow-x-auto">
+        <Table
+          className="[&_td]:border-border [&_th]:border-border border-separate border-spacing-0 [&_tfoot_td]:border-t [&_th]:border-b [&_tr]:border-none [&_tr:not(:last-child)_td]:border-b min-w-full"
+          style={{
+            width: "100%",
+          }}
+        >
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="bg-muted/50">
+                {headerGroup.headers.map((header) => {
+                  const { column } = header;
                   const isPinned = column.getIsPinned();
                   const isLastLeftPinned =
                     isPinned === "left" && column.getIsLastColumn("left");
@@ -747,9 +584,10 @@ export default function ContactsTable() {
                     isPinned === "right" && column.getIsFirstColumn("right");
 
                   return (
-                    <TableCell
-                      key={cell.id}
-                      className="[&[data-pinned][data-last-col]]:border-border data-pinned:bg-background/90 truncate data-pinned:backdrop-blur-xs [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right][data-last-col=right]]:border-l"
+                    <TableHead
+                      key={header.id}
+                      className="[&[data-pinned][data-last-col]]:border-border data-pinned:bg-muted/90 relative h-10 border-t data-pinned:backdrop-blur-xs [&:not([data-pinned]):has(+[data-pinned])_div.cursor-col-resize:last-child]:opacity-0 [&[data-last-col=left]_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right]:last-child_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=right][data-last-col=right]]:border-l px-3 py-2"
+                      colSpan={header.colSpan}
                       style={{ ...getPinningStyles(column) }}
                       data-pinned={isPinned || undefined}
                       data-last-col={
@@ -760,25 +598,203 @@ export default function ContactsTable() {
                           : undefined
                       }
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="truncate">
+                          {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                            <div
+                              className={cn(
+                                header.column.getCanSort() &&
+                                  "flex h-full cursor-pointer select-none items-center gap-2"
+                              )}
+                              onClick={header.column.getToggleSortingHandler()}
+                              onKeyDown={(e) => {
+                                if (
+                                  header.column.getCanSort() &&
+                                  (e.key === "Enter" || e.key === " ")
+                                ) {
+                                  e.preventDefault();
+                                  header.column.getToggleSortingHandler()?.(e);
+                                }
+                              }}
+                              tabIndex={
+                                header.column.getCanSort() ? 0 : undefined
+                              }
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                              {{
+                                asc: (
+                                  <RiArrowUpSLine
+                                    className="shrink-0 opacity-60"
+                                    size={16}
+                                    aria-hidden="true"
+                                  />
+                                ),
+                                desc: (
+                                  <RiArrowDownSLine
+                                    className="shrink-0 opacity-60"
+                                    size={16}
+                                    aria-hidden="true"
+                                  />
+                                ),
+                              }[header.column.getIsSorted() as string] ?? null}
+                            </div>
+                          ) : (
+                            flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )
+                          )}
+                        </span>
+                        {/* Pin/Unpin column controls */}
+                        {!header.isPlaceholder &&
+                          header.column.getCanPin() &&
+                          (header.column.getIsPinned() ? (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="-mr-1 size-7 shadow-none"
+                              onClick={() => header.column.pin(false)}
+                              aria-label={`Unpin ${
+                                header.column.columnDef.header as string
+                              } column`}
+                              title={`Unpin ${
+                                header.column.columnDef.header as string
+                              } column`}
+                            >
+                              <PinOffIcon
+                                className="opacity-60"
+                                size={16}
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          ) : (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="-mr-1 size-7 shadow-none"
+                                  aria-label={`Pin options for ${
+                                    header.column.columnDef.header as string
+                                  } column`}
+                                  title={`Pin options for ${
+                                    header.column.columnDef.header as string
+                                  } column`}
+                                >
+                                  <EllipsisIcon
+                                    className="opacity-60"
+                                    size={16}
+                                    aria-hidden="true"
+                                  />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => header.column.pin("left")}
+                                >
+                                  <ArrowLeftToLineIcon
+                                    size={16}
+                                    className="opacity-60"
+                                    aria-hidden="true"
+                                  />
+                                  Stick to left
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => header.column.pin("right")}
+                                >
+                                  <ArrowRightToLineIcon
+                                    size={16}
+                                    className="opacity-60"
+                                    aria-hidden="true"
+                                  />
+                                  Stick to right
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          ))}
+                        {header.column.getCanResize() && (
+                          <div
+                            {...{
+                              onDoubleClick: () => header.column.resetSize(),
+                              onMouseDown: header.getResizeHandler(),
+                              onTouchStart: header.getResizeHandler(),
+                              className:
+                                "absolute top-0 h-full w-4 cursor-col-resize user-select-none touch-none -right-2 z-10 flex justify-center before:absolute before:w-px before:inset-y-0 before:bg-border before:-translate-x-px",
+                            }}
+                          />
+                        )}
+                      </div>
+                    </TableHead>
                   );
                 })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-        <tbody aria-hidden="true" className="table-row h-1"></tbody>
-      </Table>
+            ))}
+          </TableHeader>
+          <tbody aria-hidden="true" className="table-row h-1"></tbody>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Loading...
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    const { column } = cell;
+                    const isPinned = column.getIsPinned();
+                    const isLastLeftPinned =
+                      isPinned === "left" && column.getIsLastColumn("left");
+                    const isFirstRightPinned =
+                      isPinned === "right" && column.getIsFirstColumn("right");
+
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className="[&[data-pinned][data-last-col]]:border-border data-pinned:bg-background/90 data-pinned:backdrop-blur-xs [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right][data-last-col=right]]:border-l px-3 py-2"
+                        style={{ ...getPinningStyles(column) }}
+                        data-pinned={isPinned || undefined}
+                        data-last-col={
+                          isLastLeftPinned
+                            ? "left"
+                            : isFirstRightPinned
+                            ? "right"
+                            : undefined
+                        }
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+          <tbody aria-hidden="true" className="table-row h-1"></tbody>
+        </Table>
+      </div>
 
       {/* Pagination */}
       {table.getRowModel().rows.length > 0 && (

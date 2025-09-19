@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://anorateck.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Allow important pages
+Allow: /services/
+Allow: /portfolio/
+Allow: /blog/
+Allow: /about/
+Allow: /contact/
+Allow: /faq/
+Allow: /testimonials/
+
+# Crawl delay (optional)
+Crawl-delay: 1 

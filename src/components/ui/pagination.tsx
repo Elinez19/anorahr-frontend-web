@@ -1,5 +1,7 @@
 import * as React from "react";
 import {
+  ChevronFirstIcon,
+  ChevronLastIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   MoreHorizontalIcon,
@@ -7,6 +9,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { usePagination } from "@/hooks/use-pagination";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -116,6 +119,151 @@ function PaginationEllipsis({
   );
 }
 
+// Enhanced pagination component with first/last buttons and ellipsis
+type EnhancedPaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  paginationItemsToDisplay?: number;
+  onPageChange?: (page: number) => void;
+};
+
+function EnhancedPagination({
+  currentPage,
+  totalPages,
+  paginationItemsToDisplay = 5,
+  onPageChange,
+}: EnhancedPaginationProps) {
+  const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
+    currentPage,
+    totalPages,
+    paginationItemsToDisplay,
+  });
+
+  const handlePageClick = (page: number) => {
+    if (onPageChange) {
+      onPageChange(page);
+    }
+  };
+
+  return (
+    <Pagination>
+      <PaginationContent>
+        {/* First page button */}
+        <PaginationItem>
+          <PaginationLink
+            className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            href={currentPage === 1 ? undefined : `#/page/1`}
+            aria-label="Go to first page"
+            aria-disabled={currentPage === 1 ? true : undefined}
+            role={currentPage === 1 ? "link" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage !== 1) {
+                handlePageClick(1);
+              }
+            }}
+          >
+            <ChevronFirstIcon size={16} aria-hidden="true" />
+          </PaginationLink>
+        </PaginationItem>
+
+        {/* Previous page button */}
+        <PaginationItem>
+          <PaginationLink
+            className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            href={currentPage === 1 ? undefined : `#/page/${currentPage - 1}`}
+            aria-label="Go to previous page"
+            aria-disabled={currentPage === 1 ? true : undefined}
+            role={currentPage === 1 ? "link" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage > 1) {
+                handlePageClick(currentPage - 1);
+              }
+            }}
+          >
+            <ChevronLeftIcon size={16} aria-hidden="true" />
+          </PaginationLink>
+        </PaginationItem>
+
+        {/* Left ellipsis (...) */}
+        {showLeftEllipsis && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+
+        {/* Page number links */}
+        {pages.map((page) => (
+          <PaginationItem key={page}>
+            <PaginationLink
+              href={`#/page/${page}`}
+              isActive={page === currentPage}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageClick(page);
+              }}
+            >
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+
+        {/* Right ellipsis (...) */}
+        {showRightEllipsis && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+
+        {/* Next page button */}
+        <PaginationItem>
+          <PaginationLink
+            className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            href={
+              currentPage === totalPages
+                ? undefined
+                : `#/page/${currentPage + 1}`
+            }
+            aria-label="Go to next page"
+            aria-disabled={currentPage === totalPages ? true : undefined}
+            role={currentPage === totalPages ? "link" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage < totalPages) {
+                handlePageClick(currentPage + 1);
+              }
+            }}
+          >
+            <ChevronRightIcon size={16} aria-hidden="true" />
+          </PaginationLink>
+        </PaginationItem>
+
+        {/* Last page button */}
+        <PaginationItem>
+          <PaginationLink
+            className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            href={
+              currentPage === totalPages ? undefined : `#/page/${totalPages}`
+            }
+            aria-label="Go to last page"
+            aria-disabled={currentPage === totalPages ? true : undefined}
+            role={currentPage === totalPages ? "link" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (currentPage !== totalPages) {
+                handlePageClick(totalPages);
+              }
+            }}
+          >
+            <ChevronLastIcon size={16} aria-hidden="true" />
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+
 export {
   Pagination,
   PaginationContent,
@@ -124,4 +272,5 @@ export {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  EnhancedPagination,
 };

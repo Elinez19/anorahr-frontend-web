@@ -28,6 +28,7 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
+  EnhancedPagination,
 } from "@/components/ui/pagination";
 import {
   Popover,
@@ -809,32 +810,12 @@ export default function ContactsTable() {
             </span>{" "}
             of <span className="text-foreground">{table.getPageCount()}</span>
           </p>
-          <Pagination className="w-auto">
-            <PaginationContent className="gap-3">
-              <PaginationItem>
-                <Button
-                  variant="outline"
-                  className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  aria-label="Go to previous page"
-                >
-                  Previous
-                </Button>
-              </PaginationItem>
-              <PaginationItem>
-                <Button
-                  variant="outline"
-                  className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  aria-label="Go to next page"
-                >
-                  Next
-                </Button>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <EnhancedPagination
+            currentPage={table.getState().pagination.pageIndex + 1}
+            totalPages={table.getPageCount()}
+            paginationItemsToDisplay={5}
+            onPageChange={(page) => table.setPageIndex(page - 1)}
+          />
         </div>
       )}
     </div>

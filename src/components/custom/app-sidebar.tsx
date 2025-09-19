@@ -22,15 +22,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  RiScanLine,
-  RiBardLine,
-  RiUserFollowLine,
-  RiCodeSSlashLine,
-  RiLoginCircleLine,
-  RiLayoutLeftLine,
-  RiSettings3Line,
+  RiDashboardLine,
+  RiUserLine,
+  RiUserStarLine,
   RiLeafLine,
+  RiPaypalLine,
+  RiSettings3Line,
   RiLogoutBoxLine,
+  RiNotificationLine,
+  RiBarChartLine,
 } from "@remixicon/react";
 
 // This is sample data.
@@ -43,54 +43,54 @@ const data = {
         {
           title: "Dashboard",
           url: "#",
-          icon: RiScanLine,
+          icon: RiDashboardLine,
         },
         {
-          title: "Insights",
+          title: "Roles",
           url: "#",
-          icon: RiBardLine,
+          icon: RiUserLine,
         },
         {
-          title: "Contacts",
+          title: "Employees",
           url: "#",
-          icon: RiUserFollowLine,
+          icon: RiUserStarLine,
           isActive: true,
         },
         {
-          title: "Tools",
-          url: "#",
-          icon: RiCodeSSlashLine,
-        },
-        {
-          title: "Integration",
-          url: "#",
-          icon: RiLoginCircleLine,
-        },
-        {
-          title: "Layouts",
-          url: "#",
-          icon: RiLayoutLeftLine,
-        },
-        {
-          title: "Reports",
+          title: "Leaves",
           url: "#",
           icon: RiLeafLine,
+        },
+        {
+          title: "Payroll",
+          url: "#",
+          icon: RiPaypalLine,
+        },
+        {
+          title: "Performance",
+          url: "#",
+          icon: RiBarChartLine,
+        },
+        {
+          title: "Talent",
+          url: "#",
+          icon: RiUserStarLine,
         },
       ],
     },
     {
-      title: "Other",
+      title: "Settings",
       url: "#",
       items: [
         {
-          title: "Settings",
+          title: "General",
           url: "#",
           icon: RiSettings3Line,
         },
         {
-          title: "Help Center",
+          title: "Notifications",
           url: "#",
-          icon: RiLeafLine,
+          icon: RiNotificationLine,
         },
       ],
     },

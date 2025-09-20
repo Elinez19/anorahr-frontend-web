@@ -26,7 +26,6 @@ import {
   getPerformanceColumns,
   samplePerformanceData,
 } from "@/components/custom/performance-table-columns";
-import { Plus } from "lucide-react";
 
 export default function PerformancePage() {
   const [isDarkMode, setIsDarkMode] = useState(false);

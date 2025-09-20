@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,38 +17,30 @@ import Testimonials from "@/pages/website/Testimonials";
 import About from "@/pages/website/About";
 import Contact from "@/pages/website/Contact";
 import FAQ from "@/pages/website/FAQ";
-import { Dashboard } from "@/routes.tsx";
+import {
+  Dashboard,
+  Login,
+  Register,
+  VerifyCompany,
+  RegistrationSuccess,
+  ForgotPassword,
+  ResetPassword,
+  ConfirmEmailChange,
+} from "@/routes.tsx";
 import { ROUTE_PATHS } from "@/routes/index";
 import JivoChat from "@/components/custom/JivoChat";
 import { CHAT_CONFIG } from "@/constants";
 
 function AppContent() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setIsDarkMode(prefersDark);
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
-  // Check if current route is dashboard
+  // Check if current route is dashboard or auth pages
   const isDashboard = location.pathname === ROUTE_PATHS.DASHBOARD;
+  const isAuthPage = location.pathname.startsWith("/auth");
 
   return (
-    <div className={`${isDarkMode ? "dark" : ""}`}>
-      {!isDashboard && (
-        <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      )}
+    <div>
+      {!isDashboard && !isAuthPage && <Header />}
       <Routes>
         <Route path={ROUTE_PATHS.HOME} element={<Home />} />
         <Route path={ROUTE_PATHS.FEATURES} element={<Features />} />
@@ -70,8 +61,23 @@ function AppContent() {
         <Route path={ROUTE_PATHS.CONTACT} element={<Contact />} />
         <Route path={ROUTE_PATHS.FAQ} element={<FAQ />} />
         <Route path={ROUTE_PATHS.DASHBOARD} element={<Dashboard />} />
+
+        {/* Auth Routes */}
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+        <Route path="/auth/verify-company" element={<VerifyCompany />} />
+        <Route
+          path="/auth/registration-success"
+          element={<RegistrationSuccess />}
+        />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route path="/auth/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/auth/confirm-email-change"
+          element={<ConfirmEmailChange />}
+        />
       </Routes>
-      {!isDashboard && <Footer />}
+      {!isDashboard && !isAuthPage && <Footer />}
       {CHAT_CONFIG.enabled && <JivoChat widgetId={CHAT_CONFIG.jivoWidgetId} />}
     </div>
   );

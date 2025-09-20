@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS, MEGA_MENU_ITEMS, COMPANY_INFO } from "@/constants";
 import { ROUTE_PATHS } from "@/routes/index";
 import { Button } from "@/components/ui/button";
 
-interface HeaderProps {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-}
+interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
+const Header: React.FC<HeaderProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
@@ -143,28 +140,17 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
           </div>
 
           {/* Right Side Controls */}
-          <div className="hidden lg:flex items-center gap-2 ml-4">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-midnight-100 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+          <div className="hidden lg:flex items-center gap-3 ml-4">
+            <Button variant="ghost" asChild size="sm">
+              <Link to="/auth/login">Login</Link>
+            </Button>
             <Button asChild size="sm">
-              <Link to={ROUTE_PATHS.CONTACT}>Get Started</Link>
+              <Link to="/auth/register">Get Started</Link>
             </Button>
           </div>
 
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-midnight-100 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-full hover:bg-midnight-100 transition-colors"
@@ -246,9 +232,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                     </div>
                   );
                 })}
-                <div className="pt-4">
+                <div className="pt-4 space-y-2">
+                  <Button variant="ghost" asChild className="w-full">
+                    <Link to="/auth/login">Login</Link>
+                  </Button>
                   <Button asChild className="w-full">
-                    <Link to={ROUTE_PATHS.CONTACT}>Get Started</Link>
+                    <Link to="/auth/register">Get Started</Link>
                   </Button>
                 </div>
               </nav>

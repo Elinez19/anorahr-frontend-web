@@ -1,5 +1,217 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
+import AuthLayout from "@/layout/AuthLayout/AuthLayout";
+import authService from "@/services/features/auth/authService";
+import type { ILogin } from "@/types/auth_types";
+
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const loginData: ILogin = {
+        email: data.email,
+        password: data.password,
+      };
+
+      await authService.Login(loginData);
+      toast.success("Login successful! Welcome back.");
+      navigate("/dashboard");
+    } catch (err: any) {
+      const errorMessage =
+        err?.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <AuthLayout>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back
+          </h1>
+          <p className="text-gray-600">Sign in to your account</p>
+        </div>
+
+        {/* Social Login Buttons */}
+        <div className="space-y-3">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 bg-white border-gray-200 hover:bg-gray-50 text-gray-900"
+            onClick={() => toast.info("Google login coming soon!")}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 bg-red-500 rounded flex items-center justify-center">
+                <span className="text-white text-xs font-bold">G</span>
+              </div>
+              Sign in with Google
+            </div>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 bg-white border-gray-200 hover:bg-gray-50 text-gray-900"
+            onClick={() => toast.info("X login coming soon!")}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 bg-black rounded flex items-center justify-center">
+                <span className="text-white text-xs font-bold">X</span>
+              </div>
+              Sign in with X
+            </div>
+          </Button>
+        </div>
+
+        {/* Separator */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">OR</span>
+          </div>
+        </div>
+
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <Label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+              {...register("email")}
+              disabled={isLoading}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
+              Password
+            </Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="h-12 bg-gray-50 border-gray-200 focus:bg-white pr-10"
+                {...register("password")}
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                disabled={isLoading}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox id="remember" />
+              <Label htmlFor="remember" className="text-sm text-gray-600">
+                Remember me
+              </Label>
+            </div>
+            <Link
+              to="/auth/forgot-password"
+              className="text-sm text-mint-600 hover:underline font-medium"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full h-12 bg-mint-500 hover:bg-mint-600 text-white font-medium"
+            disabled={isLoading}
+          >
+            {isLoading ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link
+              to="/auth/register"
+              className="text-mint-600 hover:underline font-medium"
+            >
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </div>
+    </AuthLayout>
+  );
 };
 
 export default LoginPage;

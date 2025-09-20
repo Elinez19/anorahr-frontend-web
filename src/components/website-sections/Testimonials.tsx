@@ -73,15 +73,17 @@ const Testimonials: React.FC = () => {
   return (
     <section
       id="testimonials"
-      className="section bg-midnight-950 text-white py-24"
+      className="section bg-gradient-to-br from-midnight-50 to-white py-24"
     >
       <div className="container">
         <div className="text-center mb-16">
-          <div className="inline-block mb-3 px-4 py-1 rounded-full bg-midnight-800 text-mint-400 font-medium text-sm">
+          <div className="inline-block mb-3 px-4 py-1 rounded-full bg-mint-100 text-mint-700 font-medium text-sm">
             Success Stories
           </div>
-          <h2 className="section-title text-white">What Our Clients Say</h2>
-          <p className="section-subtitle text-midnight-300">
+          <h2 className="section-title text-midnight-900">
+            What Our Clients Say
+          </h2>
+          <p className="section-subtitle text-midnight-600">
             Don't just take our word for it. Hear from HR leaders who've
             transformed their organizations with our solutions.
           </p>
@@ -95,7 +97,7 @@ const Testimonials: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="relative z-10"
           >
-            <div className="relative bg-midnight-900 rounded-2xl p-8 md:p-10 shadow-elevated">
+            <div className="relative bg-white rounded-2xl p-8 md:p-10 shadow-elevated border border-midnight-100">
               <Quote
                 className="absolute top-8 left-8 text-mint-500 opacity-20"
                 size={48}
@@ -109,16 +111,16 @@ const Testimonials: React.FC = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1">
+                <h3 className="text-xl font-bold text-midnight-900 mb-1">
                   {testimonials[currentIndex].name}
                 </h3>
-                <p className="text-midnight-300 text-sm">
+                <p className="text-midnight-600 text-sm">
                   {testimonials[currentIndex].position},{" "}
                   {testimonials[currentIndex].company}
                 </p>
               </div>
 
-              <blockquote className="text-lg md:text-xl text-midnight-100 text-center relative z-10">
+              <blockquote className="text-lg md:text-xl text-midnight-700 text-center relative z-10">
                 "{testimonials[currentIndex].quote}"
               </blockquote>
             </div>

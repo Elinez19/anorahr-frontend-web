@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { CheckCircle, MapPin, Phone } from "lucide-react";
 import { SERVICES_DATA, CONTACT_INFO } from "@/constants";
 import Container from "@/components/custom/Container";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 interface LocationServicesProps {
@@ -42,7 +42,7 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
             Best Software Development Agency in{" "}
             <span className="text-mint-400">{location.name}</span>
           </h1>
-          <p className="text-xl text-midnight-300 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-midnight-600 max-w-3xl mx-auto mb-8">
             {location.description}
           </p>
           <div className="flex items-center justify-center gap-2 text-mint-400 mb-8">
@@ -60,18 +60,18 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16"
         >
-          <div className="bg-midnight-800/50 rounded-2xl p-8 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-midnight-100">
             <div className="flex items-center mb-4">
               <div className="bg-mint-500/20 p-3 rounded-lg mr-4">
                 <MapPin size={24} className="text-mint-400" />
               </div>
               <h3 className="text-xl font-bold">Our {location.name} Office</h3>
             </div>
-            <p className="text-midnight-300 mb-4">{location.address}</p>
+            <p className="text-midnight-600 mb-4">{location.address}</p>
             {location.landmarks && (
               <div>
-                <p className="text-sm text-midnight-400 mb-2">Near:</p>
-                <ul className="text-sm text-mint-400">
+                <p className="text-sm text-midnight-600 mb-2">Near:</p>
+                <ul className="text-sm text-mint-600">
                   {location.landmarks.map((landmark, index) => (
                     <li key={index}>• {landmark}</li>
                   ))}
@@ -80,7 +80,7 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
             )}
           </div>
 
-          <div className="bg-midnight-800/50 rounded-2xl p-8 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-midnight-100">
             <div className="flex items-center mb-4">
               <div className="bg-mint-500/20 p-3 rounded-lg mr-4">
                 <Phone size={24} className="text-mint-400" />
@@ -89,13 +89,13 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
                 Contact {location.name} Team
               </h3>
             </div>
-            <p className="text-midnight-300 mb-2">Direct Line:</p>
-            <p className="text-mint-400 font-medium mb-4">{location.phone}</p>
-            <p className="text-midnight-300 mb-2">Email:</p>
-            <p className="text-mint-400 font-medium">{CONTACT_INFO.email}</p>
+            <p className="text-midnight-600 mb-2">Direct Line:</p>
+            <p className="text-mint-600 font-medium mb-4">{location.phone}</p>
+            <p className="text-midnight-600 mb-2">Email:</p>
+            <p className="text-mint-600 font-medium">{CONTACT_INFO.email}</p>
           </div>
 
-          <div className="bg-midnight-800/50 rounded-2xl p-8 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-midnight-100">
             <div className="flex items-center mb-4">
               <div className="bg-mint-500/20 p-3 rounded-lg mr-4">
                 <MapPin size={24} className="text-mint-400" />
@@ -103,10 +103,10 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
               <h3 className="text-xl font-bold">Service Areas</h3>
             </div>
             {location.servingAreas && (
-              <ul className="text-midnight-300 space-y-1">
+              <ul className="text-midnight-600 space-y-1">
                 {location.servingAreas.map((area, index) => (
                   <li key={index} className="flex items-center">
-                    <CheckCircle size={16} className="text-mint-400 mr-2" />
+                    <CheckCircle size={16} className="text-mint-600 mr-2" />
                     {area}
                   </li>
                 ))}
@@ -132,19 +132,19 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.1 * index }}
-                className="bg-midnight-800/50 rounded-2xl p-8 backdrop-blur-sm hover:bg-midnight-800/70 transition-all"
+                className="bg-white rounded-2xl p-8 shadow-lg border border-midnight-100 hover:shadow-xl transition-all"
               >
                 <h3 className="text-xl font-bold mb-4">{service.title}</h3>
-                <p className="text-midnight-300 mb-6">{service.description}</p>
+                <p className="text-midnight-600 mb-6">{service.description}</p>
                 <ul className="space-y-2 mb-6">
                   {service.features.slice(0, 4).map((feature, idx) => (
                     <li key={idx} className="flex items-center text-sm">
-                      <CheckCircle size={16} className="text-mint-400 mr-2" />
+                      <CheckCircle size={16} className="text-mint-600 mr-2" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <p className="text-mint-400 font-medium text-sm">
+                <p className="text-mint-600 font-medium text-sm">
                   {service.price}
                 </p>
               </motion.div>
@@ -184,11 +184,11 @@ const LocationServices: React.FC<LocationServicesProps> = ({ location }) => {
                   "Best value software development services in Nigeria",
               },
             ].map((benefit, index) => (
-              <div key={index} className="bg-midnight-800/30 rounded-xl p-6">
-                <h4 className="font-bold mb-3 text-mint-400">
+              <div key={index} className="bg-mint-50 rounded-xl p-6">
+                <h4 className="font-bold mb-3 text-mint-600">
                   {benefit.title}
                 </h4>
-                <p className="text-midnight-300 text-sm">
+                <p className="text-midnight-600 text-sm">
                   {benefit.description}
                 </p>
               </div>

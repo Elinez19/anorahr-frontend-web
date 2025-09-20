@@ -43,17 +43,17 @@ const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="section bg-gradient-to-br from-midnight-900 to-midnight-950 text-white"
+      className="section bg-gradient-to-br from-midnight-50 to-white"
     >
       <Container padding="lg">
         <div className="text-center mb-16">
-          <div className="inline-block mb-3 px-4 py-1 rounded-full bg-midnight-800 text-mint-400 font-medium text-sm">
+          <div className="inline-block mb-3 px-4 py-1 rounded-full bg-mint-100 text-mint-700 font-medium text-sm">
             Get In Touch
           </div>
-          <h2 className="section-title text-white">
+          <h2 className="section-title text-midnight-900">
             Ready to Launch Your HR Solution?
           </h2>
-          <p className="section-subtitle text-midnight-300">
+          <p className="section-subtitle text-midnight-600">
             Let's discuss how we can help bring your idea to life in record
             time.
           </p>
@@ -73,40 +73,42 @@ const Contact: React.FC = () => {
 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="bg-midnight-800 p-3 rounded-lg mr-4">
+                    <div className="bg-mint-100 p-3 rounded-lg mr-4">
                       <Mail size={20} className="text-mint-500" />
                     </div>
                     <div>
-                      <p className="text-midnight-300 text-sm mb-1">
+                      <p className="text-midnight-600 text-sm mb-1">
                         Email us at
                       </p>
-                      <p className="text-white font-medium">hello@anora.tech</p>
+                      <p className="text-midnight-900 font-medium">
+                        hello@anora.tech
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-midnight-800 p-3 rounded-lg mr-4">
+                    <div className="bg-mint-100 p-3 rounded-lg mr-4">
                       <Phone size={20} className="text-mint-500" />
                     </div>
                     <div>
-                      <p className="text-midnight-300 text-sm mb-1">
+                      <p className="text-midnight-600 text-sm mb-1">
                         Call us at
                       </p>
-                      <p className="text-white font-medium">
+                      <p className="text-midnight-900 font-medium">
                         +1 (555) 123-4567
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-midnight-800 p-3 rounded-lg mr-4">
+                    <div className="bg-mint-100 p-3 rounded-lg mr-4">
                       <MapPin size={20} className="text-mint-500" />
                     </div>
                     <div>
-                      <p className="text-midnight-300 text-sm mb-1">
+                      <p className="text-midnight-600 text-sm mb-1">
                         Visit our office
                       </p>
-                      <p className="text-white font-medium">
+                      <p className="text-midnight-900 font-medium">
                         123 Innovation Way
                         <br />
                         San Francisco, CA 94107
@@ -118,23 +120,23 @@ const Contact: React.FC = () => {
 
               <div>
                 <h3 className="text-xl font-bold mb-4">Working Hours</h3>
-                <p className="text-midnight-300 mb-2">Monday - Friday:</p>
-                <p className="text-white font-medium mb-4">
+                <p className="text-midnight-600 mb-2">Monday - Friday:</p>
+                <p className="text-midnight-900 font-medium mb-4">
                   9:00 AM - 6:00 PM (PT)
                 </p>
-                <p className="text-midnight-300 mb-2">Saturday - Sunday:</p>
-                <p className="text-white font-medium">Closed</p>
+                <p className="text-midnight-600 mb-2">Saturday - Sunday:</p>
+                <p className="text-midnight-900 font-medium">Closed</p>
               </div>
             </div>
 
-            <div className="lg:col-span-3 bg-midnight-800/50 rounded-2xl p-8 backdrop-blur-sm">
+            <div className="lg:col-span-3 bg-white rounded-2xl p-8 shadow-lg border border-midnight-100">
               {!isSubmitted ? (
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label
                         htmlFor="name"
-                        className="block text-midnight-300 mb-2 text-sm"
+                        className="block text-midnight-700 mb-2 text-sm"
                       >
                         Your Name
                       </label>
@@ -145,14 +147,14 @@ const Contact: React.FC = () => {
                         value={formState.name}
                         onChange={handleChange}
                         required
-                        className="w-full p-3 bg-midnight-700 border border-midnight-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-white"
+                        className="w-full p-3 bg-white border border-midnight-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-midnight-900"
                         placeholder="John Doe"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-midnight-300 mb-2 text-sm"
+                        className="block text-midnight-700 mb-2 text-sm"
                       >
                         Your Email
                       </label>
@@ -163,7 +165,7 @@ const Contact: React.FC = () => {
                         value={formState.email}
                         onChange={handleChange}
                         required
-                        className="w-full p-3 bg-midnight-700 border border-midnight-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-white"
+                        className="w-full p-3 bg-white border border-midnight-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-midnight-900"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -172,7 +174,7 @@ const Contact: React.FC = () => {
                   <div className="mb-6">
                     <label
                       htmlFor="company"
-                      className="block text-midnight-300 mb-2 text-sm"
+                      className="block text-midnight-700 mb-2 text-sm"
                     >
                       Company Name
                     </label>
@@ -182,7 +184,7 @@ const Contact: React.FC = () => {
                       name="company"
                       value={formState.company}
                       onChange={handleChange}
-                      className="w-full p-3 bg-midnight-700 border border-midnight-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-white"
+                      className="w-full p-3 bg-white border border-midnight-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-midnight-900"
                       placeholder="Your Company"
                     />
                   </div>
@@ -190,7 +192,7 @@ const Contact: React.FC = () => {
                   <div className="mb-8">
                     <label
                       htmlFor="message"
-                      className="block text-midnight-300 mb-2 text-sm"
+                      className="block text-midnight-700 mb-2 text-sm"
                     >
                       Your Message
                     </label>
@@ -201,7 +203,7 @@ const Contact: React.FC = () => {
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full p-3 bg-midnight-700 border border-midnight-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-white"
+                      className="w-full p-3 bg-white border border-midnight-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-500 text-midnight-900"
                       placeholder="Tell us about your project..."
                     ></textarea>
                   </div>
@@ -248,8 +250,10 @@ const Contact: React.FC = () => {
                   <div className="w-16 h-16 bg-mint-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Check size={32} className="text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4">Message Sent!</h3>
-                  <p className="text-midnight-300 mb-6">
+                  <h3 className="text-2xl font-bold mb-4 text-midnight-900">
+                    Message Sent!
+                  </h3>
+                  <p className="text-midnight-600 mb-6">
                     Thank you for reaching out. We'll get back to you within 24
                     hours.
                   </p>

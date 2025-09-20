@@ -200,10 +200,12 @@ export default function AddRolePage() {
             </div>
 
             {/* Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Role Information</CardTitle>
-                <CardDescription>
+            <Card className="dark:bg-gradient-to-br dark:from-emerald-900/10 dark:to-emerald-800/5 dark:border-emerald-700/20">
+              <CardHeader className="dark:border-b dark:border-emerald-700/20">
+                <CardTitle className="dark:text-emerald-100">
+                  Role Information
+                </CardTitle>
+                <CardDescription className="dark:text-emerald-200/80">
                   Define the role details and assign appropriate permissions.
                 </CardDescription>
               </CardHeader>
@@ -215,7 +217,9 @@ export default function AddRolePage() {
                   >
                     {/* Basic Information */}
                     <div className="space-y-4">
-                      <h3 className="text-lg font-medium">Basic Information</h3>
+                      <h3 className="text-lg font-medium dark:text-emerald-100">
+                        Basic Information
+                      </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
@@ -280,7 +284,9 @@ export default function AddRolePage() {
 
                     {/* Permissions */}
                     <div className="space-y-4">
-                      <h3 className="text-lg font-medium">Permissions</h3>
+                      <h3 className="text-lg font-medium dark:text-emerald-100">
+                        Permissions
+                      </h3>
                       <FormField
                         control={form.control}
                         name="permissions"

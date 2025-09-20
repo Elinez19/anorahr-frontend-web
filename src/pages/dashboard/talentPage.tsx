@@ -26,7 +26,6 @@ import {
   getTalentColumns,
   sampleTalentData,
 } from "@/components/custom/talent-table-columns";
-import { Plus } from "lucide-react";
 
 export default function TalentPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);

@@ -18,11 +18,16 @@ import {
 import { Button } from "@/components/ui/button";
 import UserDropdown from "@/components/custom/user-dropdown";
 import FeedbackDialog from "@/components/custom/feedback-dialog";
-import { HREmployeesTable } from "@/components/custom/hr-employees-table";
-import { RiDashboardLine } from "@remixicon/react";
+import { RiUserLine } from "@remixicon/react";
 import { HRStatsGrid, sampleHRStats } from "@/components/custom/hr-stats-grid";
+import { ReusableTable } from "@/components/custom/reusable-table";
+import {
+  getRoleColumns,
+  sampleRoleData,
+} from "@/components/custom/role-table-columns";
+import { Plus } from "lucide-react";
 
-export default function Page() {
+export default function RolesPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -40,6 +45,39 @@ export default function Page() {
     document.documentElement.classList.toggle("dark");
   };
 
+  const handleEditRole = (role: any) => {
+    console.log("Edit role:", role);
+  };
+
+  const handleDeleteRole = (role: any) => {
+    console.log("Delete role:", role);
+  };
+
+  const handleViewRole = (role: any) => {
+    console.log("View role:", role);
+  };
+
+  const handleDataChange = (newData: any[]) => {
+    // Handle data changes
+  };
+
+  const handleDeleteRows = (rows: any[]) => {
+    // Handle bulk delete
+  };
+
+  const columns = getRoleColumns(
+    handleEditRole,
+    handleDeleteRole,
+    handleViewRole
+  );
+
+  const customActions = (
+    <Button size="sm">
+      <Plus className="w-4 h-4 mr-2" />
+      Add Role
+    </Button>
+  );
+
   return (
     <div className={`${isDarkMode ? "dark" : ""}`}>
       <SidebarProvider>
@@ -56,13 +94,13 @@ export default function Page() {
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href="#">
-                      <RiDashboardLine size={22} aria-hidden="true" />
-                      <span className="sr-only">Dashboard</span>
+                      <RiUserLine size={22} aria-hidden="true" />
+                      <span className="sr-only">Roles</span>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>HR Dashboard</BreadcrumbPage>
+                    <BreadcrumbPage>Roles Management</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
@@ -83,21 +121,55 @@ export default function Page() {
             {/* Page intro */}
             <div className="flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <h1 className="text-2xl font-semibold">
-                  Welcome to HR Dashboard
-                </h1>
+                <h1 className="text-2xl font-semibold">Roles Management</h1>
                 <p className="text-sm text-muted-foreground">
-                  Here&rsquo;s an overview of your HR metrics and employee data.
-                  Manage your workforce with ease!
+                  Manage organizational roles and permissions. Create, edit, and
+                  assign roles to employees.
                 </p>
               </div>
-              <Button className="px-3">Add Employee</Button>
+              <Button className="px-3">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Role
+              </Button>
             </div>
-            {/* HR Stats */}
+
+            {/* Roles Stats */}
             <HRStatsGrid stats={sampleHRStats} />
-            {/* Employees Table */}
+
+            {/* Roles Table */}
             <div className="min-h-[100vh] flex-1 md:min-h-min">
-              <HREmployeesTable />
+              <ReusableTable
+                data={sampleRoleData}
+                columns={columns}
+                searchPlaceholder="Search roles..."
+                searchColumn="name"
+                filterColumns={[
+                  {
+                    columnId: "status",
+                    label: "Status",
+                    options: [
+                      {
+                        value: "active",
+                        label: "Active",
+                        count: sampleRoleData.filter(
+                          (r) => r.status === "active"
+                        ).length,
+                      },
+                      {
+                        value: "inactive",
+                        label: "Inactive",
+                        count: sampleRoleData.filter(
+                          (r) => r.status === "inactive"
+                        ).length,
+                      },
+                    ],
+                  },
+                ]}
+                onDataChange={handleDataChange}
+                onDeleteRows={handleDeleteRows}
+                emptyMessage="No roles found."
+                customActions={customActions}
+              />
             </div>
           </div>
         </SidebarInset>

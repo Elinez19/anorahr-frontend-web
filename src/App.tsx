@@ -19,6 +19,12 @@ import Contact from "@/pages/website/Contact";
 import FAQ from "@/pages/website/FAQ";
 import {
   Dashboard,
+  RolesPage,
+  EmployeesPage,
+  LeavesPage,
+  PayrollPage,
+  PerformancePage,
+  TalentPage,
   Login,
   Register,
   VerifyCompany,
@@ -35,7 +41,7 @@ function AppContent() {
   const location = useLocation();
 
   // Check if current route is dashboard or auth pages
-  const isDashboard = location.pathname === ROUTE_PATHS.DASHBOARD;
+  const isDashboard = location.pathname.startsWith("/dashboard");
   const isAuthPage = location.pathname.startsWith("/auth");
 
   return (
@@ -61,6 +67,18 @@ function AppContent() {
         <Route path={ROUTE_PATHS.CONTACT} element={<Contact />} />
         <Route path={ROUTE_PATHS.FAQ} element={<FAQ />} />
         <Route path={ROUTE_PATHS.DASHBOARD} element={<Dashboard />} />
+        <Route path={ROUTE_PATHS.DASHBOARD_ROLES} element={<RolesPage />} />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_EMPLOYEES}
+          element={<EmployeesPage />}
+        />
+        <Route path={ROUTE_PATHS.DASHBOARD_LEAVES} element={<LeavesPage />} />
+        <Route path={ROUTE_PATHS.DASHBOARD_PAYROLL} element={<PayrollPage />} />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_PERFORMANCE}
+          element={<PerformancePage />}
+        />
+        <Route path={ROUTE_PATHS.DASHBOARD_TALENT} element={<TalentPage />} />
 
         {/* Auth Routes */}
         <Route path="/auth/login" element={<Login />} />

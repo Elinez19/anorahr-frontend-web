@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -62,90 +62,7 @@ const AuthLayout = ({
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-full h-full relative">
                   {/* Abstract flowing lines */}
-                  <svg
-                    className="w-full h-full"
-                    viewBox="0 0 400 600"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="waveGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#3B82F6"
-                          stopOpacity="0.3"
-                        />
-                        <stop
-                          offset="50%"
-                          stopColor="#8B5CF6"
-                          stopOpacity="0.4"
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#6366F1"
-                          stopOpacity="0.5"
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Wave patterns */}
-                    <path
-                      d="M0,150 Q100,100 200,150 T400,150 L400,200 Q300,180 200,200 T0,200 Z"
-                      fill="url(#waveGradient)"
-                      opacity="0.6"
-                    />
-                    <path
-                      d="M0,250 Q150,200 300,250 T400,250 L400,300 Q250,280 100,300 T0,300 Z"
-                      fill="url(#waveGradient)"
-                      opacity="0.4"
-                    />
-                    <path
-                      d="M0,350 Q120,320 240,350 T400,350 L400,400 Q280,380 160,400 T0,400 Z"
-                      fill="url(#waveGradient)"
-                      opacity="0.5"
-                    />
-                    <path
-                      d="M0,450 Q80,420 160,450 T400,450 L400,500 Q320,480 240,500 T0,500 Z"
-                      fill="url(#waveGradient)"
-                      opacity="0.3"
-                    />
-
-                    {/* Additional flowing lines */}
-                    <path
-                      d="M50,100 Q150,80 250,100 T350,100"
-                      stroke="url(#waveGradient)"
-                      strokeWidth="2"
-                      fill="none"
-                      opacity="0.7"
-                    />
-                    <path
-                      d="M30,200 Q130,180 230,200 T330,200"
-                      stroke="url(#waveGradient)"
-                      strokeWidth="2"
-                      fill="none"
-                      opacity="0.6"
-                    />
-                    <path
-                      d="M70,300 Q170,280 270,300 T370,300"
-                      stroke="url(#waveGradient)"
-                      strokeWidth="2"
-                      fill="none"
-                      opacity="0.5"
-                    />
-                    <path
-                      d="M20,400 Q120,380 220,400 T320,400"
-                      stroke="url(#waveGradient)"
-                      strokeWidth="2"
-                      fill="none"
-                      opacity="0.4"
-                    />
-                  </svg>
+                  <div className="w-full h-full bg-gradient-to-br from-blue-50 to-purple-50"></div>
                 </div>
               </div>
             </div>

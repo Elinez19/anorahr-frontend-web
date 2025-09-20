@@ -13,3 +13,9 @@ export { default as ConfirmEmailChange } from "@/pages/AuthPages/Confirm-Email-C
 // Dashboard Pages
 // ============================
 export { default as Dashboard } from "@/pages/dashboard/dashboardPage";
+export { default as RolesPage } from "@/pages/dashboard/rolesPage";
+export { default as EmployeesPage } from "@/pages/dashboard/employeesPage";
+export { default as LeavesPage } from "@/pages/dashboard/leavesPage";
+export { default as PayrollPage } from "@/pages/dashboard/payrollPage";
+export { default as PerformancePage } from "@/pages/dashboard/performancePage";
+export { default as TalentPage } from "@/pages/dashboard/talentPage";

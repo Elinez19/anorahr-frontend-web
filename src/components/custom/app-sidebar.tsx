@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { SearchForm } from "@/components/forms/search-form";
 import {
@@ -42,38 +43,37 @@ const data = {
       items: [
         {
           title: "Dashboard",
-          url: "#",
+          url: "/dashboard",
           icon: RiDashboardLine,
         },
         {
           title: "Roles",
-          url: "#",
+          url: "/dashboard/roles",
           icon: RiUserLine,
         },
         {
           title: "Employees",
-          url: "#",
+          url: "/dashboard/employees",
           icon: RiUserStarLine,
-          isActive: true,
         },
         {
           title: "Leaves",
-          url: "#",
+          url: "/dashboard/leaves",
           icon: RiLeafLine,
         },
         {
           title: "Payroll",
-          url: "#",
+          url: "/dashboard/payroll",
           icon: RiPaypalLine,
         },
         {
           title: "Performance",
-          url: "#",
+          url: "/dashboard/performance",
           icon: RiBarChartLine,
         },
         {
           title: "Talent",
-          url: "#",
+          url: "/dashboard/talent",
           icon: RiUserStarLine,
         },
       ],
@@ -99,6 +99,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
+  const location = useLocation();
   const isCollapsed = state === "collapsed";
 
   return (
@@ -132,51 +133,54 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               )}
               <SidebarGroupContent className="px-2">
                 <SidebarMenu>
-                  {item.items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      {isCollapsed ? (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <SidebarMenuButton
-                              asChild
-                              className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
-                              isActive={item.isActive}
-                            >
-                              <a href={item.url}>
-                                {item.icon && (
-                                  <item.icon
-                                    className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
-                                    size={22}
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </a>
-                            </SidebarMenuButton>
-                          </TooltipTrigger>
-                          <TooltipContent side="right" sideOffset={8}>
-                            <p>{item.title}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        <SidebarMenuButton
-                          asChild
-                          className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
-                          isActive={item.isActive}
-                        >
-                          <a href={item.url}>
-                            {item.icon && (
-                              <item.icon
-                                className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
-                                size={22}
-                                aria-hidden="true"
-                              />
-                            )}
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
-                      )}
-                    </SidebarMenuItem>
-                  ))}
+                  {item.items.map((item) => {
+                    const isActive = location.pathname === item.url;
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        {isCollapsed ? (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <SidebarMenuButton
+                                asChild
+                                className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+                                isActive={isActive}
+                              >
+                                <Link to={item.url}>
+                                  {item.icon && (
+                                    <item.icon
+                                      className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
+                                      size={22}
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </Link>
+                              </SidebarMenuButton>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" sideOffset={8}>
+                              <p>{item.title}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        ) : (
+                          <SidebarMenuButton
+                            asChild
+                            className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+                            isActive={isActive}
+                          >
+                            <Link to={item.url}>
+                              {item.icon && (
+                                <item.icon
+                                  className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
+                                  size={22}
+                                  aria-hidden="true"
+                                />
+                              )}
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        )}
+                      </SidebarMenuItem>
+                    );
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>

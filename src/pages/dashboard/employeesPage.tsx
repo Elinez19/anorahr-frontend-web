@@ -18,11 +18,11 @@ import {
 import { Button } from "@/components/ui/button";
 import UserDropdown from "@/components/custom/user-dropdown";
 import FeedbackDialog from "@/components/custom/feedback-dialog";
-import { HREmployeesTable } from "@/components/custom/hr-employees-table";
-import { RiDashboardLine } from "@remixicon/react";
+import { RiUserStarLine } from "@remixicon/react";
 import { HRStatsGrid, sampleHRStats } from "@/components/custom/hr-stats-grid";
+import { HREmployeesTable } from "@/components/custom/hr-employees-table";
 
-export default function Page() {
+export default function EmployeesPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ export default function Page() {
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href="#">
-                      <RiDashboardLine size={22} aria-hidden="true" />
-                      <span className="sr-only">Dashboard</span>
+                      <RiUserStarLine size={22} aria-hidden="true" />
+                      <span className="sr-only">Employees</span>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>HR Dashboard</BreadcrumbPage>
+                    <BreadcrumbPage>Employee Management</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
@@ -83,18 +83,17 @@ export default function Page() {
             {/* Page intro */}
             <div className="flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <h1 className="text-2xl font-semibold">
-                  Welcome to HR Dashboard
-                </h1>
+                <h1 className="text-2xl font-semibold">Employee Management</h1>
                 <p className="text-sm text-muted-foreground">
-                  Here&rsquo;s an overview of your HR metrics and employee data.
-                  Manage your workforce with ease!
+                  Manage your workforce. View, edit, and track employee
+                  information and performance.
                 </p>
               </div>
-              <Button className="px-3">Add Employee</Button>
             </div>
-            {/* HR Stats */}
+
+            {/* Employee Stats */}
             <HRStatsGrid stats={sampleHRStats} />
+
             {/* Employees Table */}
             <div className="min-h-[100vh] flex-1 md:min-h-min">
               <HREmployeesTable />

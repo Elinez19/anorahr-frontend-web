@@ -18,6 +18,12 @@ export const ROUTES = {
   CONTACT: "/contact",
   FAQ: "/faq",
   DASHBOARD: "/dashboard",
+  DASHBOARD_ROLES: "/dashboard/roles",
+  DASHBOARD_EMPLOYEES: "/dashboard/employees",
+  DASHBOARD_LEAVES: "/dashboard/leaves",
+  DASHBOARD_PAYROLL: "/dashboard/payroll",
+  DASHBOARD_PERFORMANCE: "/dashboard/performance",
+  DASHBOARD_TALENT: "/dashboard/talent",
 } as const;
 
 // Navigation items for the main menu

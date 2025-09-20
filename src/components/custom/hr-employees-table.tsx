@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Download, Filter, UserPlus } from "lucide-react";
 import { ReusableTable } from "./reusable-table";
@@ -54,10 +55,10 @@ export function HREmployeesTable() {
         Export
       </Button>
       <Button size="sm" asChild>
-        <a href="/dashboard/employees/add">
+        <Link to="/dashboard/employees/add">
           <UserPlus className="w-4 h-4 mr-2" />
           Add Employee
-        </a>
+        </Link>
       </Button>
     </>
   );

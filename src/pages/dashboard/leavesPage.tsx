@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
   Breadcrumb,
@@ -83,10 +84,10 @@ export default function LeavesPage() {
 
   const customActions = (
     <Button size="sm" asChild>
-      <a href="/dashboard/leaves/request">
+      <Link to="/dashboard/leaves/request">
         <Plus className="w-4 h-4 mr-2" />
         Request Leave
-      </a>
+      </Link>
     </Button>
   );
 
@@ -140,10 +141,10 @@ export default function LeavesPage() {
                 </p>
               </div>
               <Button className="px-3" asChild>
-                <a href="/dashboard/leaves/request">
+                <Link to="/dashboard/leaves/request">
                   <Plus className="w-4 h-4 mr-2" />
                   Request Leave
-                </a>
+                </Link>
               </Button>
             </div>
 

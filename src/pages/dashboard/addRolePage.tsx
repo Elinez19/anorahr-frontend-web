@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Moon, Sun, ArrowLeft } from "lucide-react";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
@@ -153,9 +153,11 @@ export default function AddRolePage() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="/dashboard/roles">
-                      <RiUserLine size={22} aria-hidden="true" />
-                      <span className="sr-only">Roles</span>
+                    <BreadcrumbLink asChild>
+                      <Link to="/dashboard/roles">
+                        <RiUserLine size={22} aria-hidden="true" />
+                        <span className="sr-only">Roles</span>
+                      </Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
   Breadcrumb,
@@ -73,10 +74,10 @@ export default function TalentPage() {
 
   const customActions = (
     <Button size="sm" asChild>
-      <a href="/dashboard/talent/add">
+      <Link to="/dashboard/talent/add">
         <Plus className="w-4 h-4 mr-2" />
         Add Talent
-      </a>
+      </Link>
     </Button>
   );
 
@@ -129,10 +130,10 @@ export default function TalentPage() {
                 </p>
               </div>
               <Button className="px-3" asChild>
-                <a href="/dashboard/talent/add">
+                <Link to="/dashboard/talent/add">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Talent
-                </a>
+                </Link>
               </Button>
             </div>
 

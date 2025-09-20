@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
   Breadcrumb,
@@ -73,10 +74,10 @@ export default function RolesPage() {
 
   const customActions = (
     <Button size="sm" asChild>
-      <a href="/dashboard/roles/add">
+      <Link to="/dashboard/roles/add">
         <Plus className="w-4 h-4 mr-2" />
         Add Role
-      </a>
+      </Link>
     </Button>
   );
 
@@ -130,10 +131,10 @@ export default function RolesPage() {
                 </p>
               </div>
               <Button className="px-3" asChild>
-                <a href="/dashboard/roles/add">
+                <Link to="/dashboard/roles/add">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Role
-                </a>
+                </Link>
               </Button>
             </div>
 

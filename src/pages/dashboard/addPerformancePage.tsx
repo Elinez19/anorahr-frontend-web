@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Moon, Sun, ArrowLeft } from "lucide-react";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
@@ -158,9 +158,11 @@ export default function AddPerformancePage() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="/dashboard/performance">
-                      <RiBarChartLine size={22} aria-hidden="true" />
-                      <span className="sr-only">Performance</span>
+                    <BreadcrumbLink asChild>
+                      <Link to="/dashboard/performance">
+                        <RiBarChartLine size={22} aria-hidden="true" />
+                        <span className="sr-only">Performance</span>
+                      </Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />

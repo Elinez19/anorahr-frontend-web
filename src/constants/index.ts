@@ -24,6 +24,11 @@ export const ROUTES = {
   DASHBOARD_PAYROLL: "/dashboard/payroll",
   DASHBOARD_PERFORMANCE: "/dashboard/performance",
   DASHBOARD_TALENT: "/dashboard/talent",
+  DASHBOARD_ADD_EMPLOYEE: "/dashboard/employees/add",
+  DASHBOARD_ADD_ROLE: "/dashboard/roles/add",
+  DASHBOARD_REQUEST_LEAVE: "/dashboard/leaves/request",
+  DASHBOARD_ADD_PERFORMANCE: "/dashboard/performance/add",
+  DASHBOARD_ADD_TALENT: "/dashboard/talent/add",
 } as const;
 
 // Navigation items for the main menu

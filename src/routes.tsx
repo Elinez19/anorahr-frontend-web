@@ -19,3 +19,8 @@ export { default as LeavesPage } from "@/pages/dashboard/leavesPage";
 export { default as PayrollPage } from "@/pages/dashboard/payrollPage";
 export { default as PerformancePage } from "@/pages/dashboard/performancePage";
 export { default as TalentPage } from "@/pages/dashboard/talentPage";
+export { default as AddEmployeePage } from "@/pages/dashboard/addEmployeePage";
+export { default as AddRolePage } from "@/pages/dashboard/addRolePage";
+export { default as RequestLeavePage } from "@/pages/dashboard/requestLeavePage";
+export { default as AddPerformancePage } from "@/pages/dashboard/addPerformancePage";
+export { default as AddTalentPage } from "@/pages/dashboard/addTalentPage";

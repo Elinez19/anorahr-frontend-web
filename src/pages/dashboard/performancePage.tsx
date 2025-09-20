@@ -72,9 +72,11 @@ export default function PerformancePage() {
   );
 
   const customActions = (
-    <Button size="sm">
-      <Plus className="w-4 h-4 mr-2" />
-      Add Review
+    <Button size="sm" asChild>
+      <a href="/dashboard/performance/add">
+        <Plus className="w-4 h-4 mr-2" />
+        Add Review
+      </a>
     </Button>
   );
 
@@ -128,9 +130,11 @@ export default function PerformancePage() {
                   Track employee performance, conduct reviews, and set goals.
                 </p>
               </div>
-              <Button className="px-3">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Review
+              <Button className="px-3" asChild>
+                <a href="/dashboard/performance/add">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Review
+                </a>
               </Button>
             </div>
 

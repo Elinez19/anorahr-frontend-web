@@ -72,9 +72,11 @@ export default function TalentPage() {
   );
 
   const customActions = (
-    <Button size="sm">
-      <Plus className="w-4 h-4 mr-2" />
-      Add Talent
+    <Button size="sm" asChild>
+      <a href="/dashboard/talent/add">
+        <Plus className="w-4 h-4 mr-2" />
+        Add Talent
+      </a>
     </Button>
   );
 
@@ -126,9 +128,11 @@ export default function TalentPage() {
                   Identify, develop, and retain top talent in your organization.
                 </p>
               </div>
-              <Button className="px-3">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Talent
+              <Button className="px-3" asChild>
+                <a href="/dashboard/talent/add">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Talent
+                </a>
               </Button>
             </div>
 

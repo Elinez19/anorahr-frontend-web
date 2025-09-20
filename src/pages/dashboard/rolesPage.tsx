@@ -72,9 +72,11 @@ export default function RolesPage() {
   );
 
   const customActions = (
-    <Button size="sm">
-      <Plus className="w-4 h-4 mr-2" />
-      Add Role
+    <Button size="sm" asChild>
+      <a href="/dashboard/roles/add">
+        <Plus className="w-4 h-4 mr-2" />
+        Add Role
+      </a>
     </Button>
   );
 
@@ -127,9 +129,11 @@ export default function RolesPage() {
                   assign roles to employees.
                 </p>
               </div>
-              <Button className="px-3">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Role
+              <Button className="px-3" asChild>
+                <a href="/dashboard/roles/add">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Role
+                </a>
               </Button>
             </div>
 

@@ -82,9 +82,11 @@ export default function LeavesPage() {
   );
 
   const customActions = (
-    <Button size="sm">
-      <Plus className="w-4 h-4 mr-2" />
-      Request Leave
+    <Button size="sm" asChild>
+      <a href="/dashboard/leaves/request">
+        <Plus className="w-4 h-4 mr-2" />
+        Request Leave
+      </a>
     </Button>
   );
 
@@ -137,9 +139,11 @@ export default function LeavesPage() {
                   balances.
                 </p>
               </div>
-              <Button className="px-3">
-                <Plus className="w-4 h-4 mr-2" />
-                Request Leave
+              <Button className="px-3" asChild>
+                <a href="/dashboard/leaves/request">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Request Leave
+                </a>
               </Button>
             </div>
 

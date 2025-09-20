@@ -53,9 +53,11 @@ export function HREmployeesTable() {
         <Download className="w-4 h-4 mr-2" />
         Export
       </Button>
-      <Button size="sm">
-        <UserPlus className="w-4 h-4 mr-2" />
-        Add Employee
+      <Button size="sm" asChild>
+        <a href="/dashboard/employees/add">
+          <UserPlus className="w-4 h-4 mr-2" />
+          Add Employee
+        </a>
       </Button>
     </>
   );

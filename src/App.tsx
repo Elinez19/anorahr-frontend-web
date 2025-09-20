@@ -25,6 +25,11 @@ import {
   PayrollPage,
   PerformancePage,
   TalentPage,
+  AddEmployeePage,
+  AddRolePage,
+  RequestLeavePage,
+  AddPerformancePage,
+  AddTalentPage,
   Login,
   Register,
   VerifyCompany,
@@ -79,6 +84,26 @@ function AppContent() {
           element={<PerformancePage />}
         />
         <Route path={ROUTE_PATHS.DASHBOARD_TALENT} element={<TalentPage />} />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_ADD_EMPLOYEE}
+          element={<AddEmployeePage />}
+        />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_ADD_ROLE}
+          element={<AddRolePage />}
+        />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_REQUEST_LEAVE}
+          element={<RequestLeavePage />}
+        />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_ADD_PERFORMANCE}
+          element={<AddPerformancePage />}
+        />
+        <Route
+          path={ROUTE_PATHS.DASHBOARD_ADD_TALENT}
+          element={<AddTalentPage />}
+        />
 
         {/* Auth Routes */}
         <Route path="/auth/login" element={<Login />} />

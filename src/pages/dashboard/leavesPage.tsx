@@ -26,7 +26,6 @@ import {
   getLeaveColumns,
   sampleLeaveData,
 } from "@/components/custom/leave-table-columns";
-import { Plus } from "lucide-react";
 
 export default function LeavesPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);

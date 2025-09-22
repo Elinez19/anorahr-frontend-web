@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Eye, EyeOff, Lock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,27 +9,26 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import AuthLayout from "@/layout/AuthLayout/AuthLayout";
-import authService from "@/services/features/auth/authService";
-
-const resetPasswordSchema = z
-  .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+import { useResetPassword } from "@/hooks/useAuth";
+import type { IResetPassword } from "@/types/auth_types";
+import {
+  resetPasswordSchema,
+  type ResetPasswordFormData,
+} from "@/helpers/auth.schemas";
 
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
+  const {
+    resetPassword,
+    reset,
+    isLoading,
+    isError,
+    isSuccess: authSuccess,
+    message,
+  } = useResetPassword();
 
   const token = searchParams.get("token");
 
@@ -42,31 +40,38 @@ const ResetPassword = () => {
     resolver: zodResolver(resetPasswordSchema),
   });
 
+  // Reset auth state on component mount
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
+  // Handle successful password reset
+  useEffect(() => {
+    if (authSuccess && message) {
+      toast.success(message);
+      setIsSuccess(true);
+    }
+  }, [authSuccess, message]);
+
+  // Handle password reset errors
+  useEffect(() => {
+    if (isError && message) {
+      toast.error(message);
+    }
+  }, [isError, message]);
+
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (!token) {
-      setError("Invalid reset token. Please request a new password reset.");
+      toast.error("Invalid reset token. Please request a new password reset.");
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    const resetData: IResetPassword = {
+      token,
+      password: data.password,
+    };
 
-    try {
-      await authService.ResetPassword({
-        token,
-        password: data.password,
-      });
-      setIsSuccess(true);
-      toast.success("Password reset successful!");
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message ||
-        "Failed to reset password. Please try again.";
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+    resetPassword(resetData);
   };
 
   if (isSuccess) {
@@ -125,9 +130,9 @@ const ResetPassword = () => {
           </p>
         </div>
 
-        {error && (
+        {isError && message && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
 

@@ -1,6 +1,15 @@
 import { encrypt } from "@/helpers/helpers.encryptDecrypt";
 import { axiosClient } from "@/services/api/axiosClient";
-import type { ILogin, ILoginToken } from "@/types/auth_types";
+import type {
+  ILogin,
+  ILoginToken,
+  IRegister,
+  IForgotPassword,
+  IResetPassword,
+  IVerifyOrganization,
+  IResendVerification,
+  IGetAccessToken,
+} from "@/types/auth_types";
 
 export const handle_tokens = (response: ILoginToken) => {
   console.log(response);
@@ -16,43 +25,52 @@ export const handle_tokens = (response: ILoginToken) => {
 };
 
 const Login = async (userData: ILogin) => {
-  const response = await axiosClient.post(`/auth/login`, userData);
+  const response = await axiosClient.post(`/company/auth/login`, userData);
   return handle_tokens(response.data);
 };
 
-const Register = async (userData: unknown) => {
-  const response = await axiosClient.post(`/auth/register`, userData);
+const Register = async (userData: IRegister) => {
+  const response = await axiosClient.post(`/company/auth/register`, userData);
   return response.data;
 };
 
-const VerifyOrganization = async (verificationData: unknown) => {
+const VerifyOrganization = async (verificationData: IVerifyOrganization) => {
   const response = await axiosClient.post(
-    `/auth/verify-organization`,
+    `/company/auth/verify-organization`,
     verificationData
   );
   return response.data;
 };
 
-const ResendVerification = async (emailData: unknown) => {
+const ResendVerification = async (emailData: IResendVerification) => {
   const response = await axiosClient.post(
-    `/auth/resend-verification`,
+    `/company/auth/resend-verification`,
     emailData
   );
   return response.data;
 };
 
-const GetAccessToken = async (tokenData: unknown) => {
-  const response = await axiosClient.post(`/auth/get-access-token`, tokenData);
+const GetAccessToken = async (tokenData: IGetAccessToken) => {
+  const response = await axiosClient.post(
+    `/company/auth/get-access-token`,
+    tokenData
+  );
   return handle_tokens(response.data);
 };
 
-const ForgotPassword = async (emailData: unknown) => {
-  const response = await axiosClient.post(`/auth/forgot-password`, emailData);
+const ForgotPassword = async (emailData: IForgotPassword) => {
+  const response = await axiosClient.post(
+    `/company/auth/forgot-password`,
+    emailData
+  );
   return response.data;
 };
 
-const ResetPassword = async (resetData: unknown) => {
-  const response = await axiosClient.put(`/auth/reset-password`, resetData);
+const ResetPassword = async (resetData: IResetPassword) => {
+  const response = await axiosClient.put(
+    `/company/auth/reset-password`,
+    resetData
+  );
   return response.data;
 };
 

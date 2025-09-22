@@ -9,31 +9,31 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import AuthLayout from "@/layout/AuthLayout/AuthLayout";
-import { useForgotPassword } from "@/hooks/useAuth";
-import type { IForgotPassword } from "@/types/auth_types";
+import { useResendVerification } from "@/hooks/useAuth";
+import type { IResendVerification } from "@/types/auth_types";
 import {
-  forgotPasswordSchema,
-  type ForgotPasswordFormData,
+  resendVerificationSchema,
+  type ResendVerificationFormData,
 } from "@/helpers/auth.schemas";
 
-const ForgotPassword = () => {
+const ResendVerificationPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const {
-    forgotPassword,
+    resendVerification,
     reset,
     isLoading,
     isError,
     isSuccess: authSuccess,
     message,
-  } = useForgotPassword();
+  } = useResendVerification();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
+  } = useForm<ResendVerificationFormData>({
+    resolver: zodResolver(resendVerificationSchema),
   });
 
   // Reset auth state on component mount
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     reset();
   }, [reset]);
 
-  // Handle successful forgot password
+  // Handle successful resend verification
   useEffect(() => {
     if (authSuccess && message) {
       toast.success(message);
@@ -49,16 +49,16 @@ const ForgotPassword = () => {
     }
   }, [authSuccess, message]);
 
-  // Handle forgot password errors
+  // Handle resend verification errors
   useEffect(() => {
     if (isError && message) {
       toast.error(message);
     }
   }, [isError, message]);
 
-  const onSubmit = async (data: ForgotPasswordFormData) => {
-    const forgotPasswordData: IForgotPassword = { email: data.email };
-    forgotPassword(forgotPasswordData);
+  const onSubmit = async (data: ResendVerificationFormData) => {
+    const resendData: IResendVerification = { email: data.email };
+    resendVerification(resendData);
   };
 
   if (isSuccess) {
@@ -73,10 +73,10 @@ const ForgotPassword = () => {
 
           <div className="space-y-2">
             <h1 className="text-2xl font-bold text-foreground">
-              Check Your Email
+              Email Sent Successfully
             </h1>
             <p className="text-muted-foreground">
-              We've sent a password reset link to{" "}
+              We've sent a new verification email to{" "}
               <span className="font-medium text-foreground">
                 {getValues("email")}
               </span>
@@ -85,13 +85,9 @@ const ForgotPassword = () => {
 
           <Alert>
             <AlertDescription>
-              Didn't receive the email? Check your spam folder or{" "}
-              <button
-                onClick={() => setIsSuccess(false)}
-                className="text-primary hover:text-primary/80 font-medium underline"
-              >
-                try again
-              </button>
+              Please check your email and click the verification link to
+              activate your account. Don't forget to check your spam folder if
+              you don't see the email.
             </AlertDescription>
           </Alert>
 
@@ -113,11 +109,10 @@ const ForgotPassword = () => {
       <div className="space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">
-            Forgot Password?
+            Resend Verification Email
           </h1>
           <p className="text-muted-foreground mt-2">
-            Enter your email address and we'll send you a link to reset your
-            password
+            Enter your email address and we'll send you a new verification link
           </p>
         </div>
 
@@ -147,7 +142,7 @@ const ForgotPassword = () => {
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Sending..." : "Send Reset Link"}
+            {isLoading ? "Sending..." : "Send Verification Email"}
           </Button>
         </form>
 
@@ -167,4 +162,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResendVerificationPage;

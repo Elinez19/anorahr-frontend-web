@@ -1,7 +1,27 @@
 import { createAsyncThunkWithHandler } from "@/services/api/apiHandler";
 import { createSlice } from "@reduxjs/toolkit";
 import { profileService } from "./profileService";
-import { Profile } from "@/types/dashboard_types";
+
+// Define Profile interface locally to avoid import issues
+interface Profile {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  logo: string;
+  website: string;
+  isVerified: boolean;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  primaryContact: {
+    name: string;
+    phone: string;
+    email: string;
+  };
+  _id: string;
+}
 
 interface ProfileState {
   profile: Profile;

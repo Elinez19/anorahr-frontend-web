@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Building, MapPin, Phone, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,23 +10,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import AuthLayout from "@/layout/AuthLayout/AuthLayout";
-import authService from "@/services/features/auth/authService";
-
-const verifyCompanySchema = z.object({
-  companyName: z.string().min(2, "Company name must be at least 2 characters"),
-  companyAddress: z.string().min(10, "Please provide a complete address"),
-  phoneNumber: z.string().min(10, "Please provide a valid phone number"),
-  industry: z.string().min(2, "Please specify your industry"),
-  companySize: z.string().min(1, "Please select company size"),
-  description: z.string().optional(),
-});
-
-type VerifyCompanyFormData = z.infer<typeof verifyCompanySchema>;
+import { useVerifyOrganization } from "@/hooks/useAuth";
+import type { IVerifyOrganization } from "@/types/auth_types";
+import {
+  verifyOrganizationSchema,
+  type VerifyOrganizationFormData,
+} from "@/helpers/auth.schemas";
 
 const VerifyCompany = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    verifyOrganization,
+    reset,
+    isLoading,
+    isError,
+    isSuccess: authSuccess,
+    message,
+  } = useVerifyOrganization();
 
   const {
     register,
@@ -37,23 +36,37 @@ const VerifyCompany = () => {
     resolver: zodResolver(verifyCompanySchema),
   });
 
-  const onSubmit = async (data: VerifyCompanyFormData) => {
-    setIsLoading(true);
-    setError(null);
+  // Reset auth state on component mount
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
-    try {
-      await authService.VerifyOrganization(data);
+  // Handle successful company verification
+  useEffect(() => {
+    if (authSuccess && message) {
+      toast.success(message);
       setIsSuccess(true);
-      toast.success("Company verification submitted successfully!");
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message ||
-        "Failed to submit verification. Please try again.";
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
+  }, [authSuccess, message]);
+
+  // Handle company verification errors
+  useEffect(() => {
+    if (isError && message) {
+      toast.error(message);
+    }
+  }, [isError, message]);
+
+  const onSubmit = async (data: VerifyCompanyFormData) => {
+    const verificationData: IVerifyOrganization = {
+      companyName: data.companyName,
+      companyAddress: data.companyAddress,
+      phoneNumber: data.phoneNumber,
+      industry: data.industry,
+      companySize: data.companySize,
+      description: data.description,
+    };
+
+    verifyOrganization(verificationData);
   };
 
   if (isSuccess) {
@@ -104,9 +117,9 @@ const VerifyCompany = () => {
           </p>
         </div>
 
-        {error && (
+        {isError && message && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
 

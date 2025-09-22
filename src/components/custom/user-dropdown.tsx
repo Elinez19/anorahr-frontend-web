@@ -9,10 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { RiSettingsLine, RiTeamLine, RiLogoutBoxLine } from "@remixicon/react";
+import { useLogout } from "@/hooks/useAuth";
 
 export default function UserDropdown() {
+  const { logout } = useLogout();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -53,7 +59,7 @@ export default function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <RiLogoutBoxLine
             size={16}
             className="opacity-60"

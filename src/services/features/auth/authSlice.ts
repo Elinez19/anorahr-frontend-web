@@ -1,5 +1,13 @@
 import { createAsyncThunkWithHandler } from "@/services/api/apiHandler";
-import { ILogin } from "@/types/auth_types";
+import type {
+  ILogin,
+  IRegister,
+  IForgotPassword,
+  IResetPassword,
+  IVerifyOrganization,
+  IResendVerification,
+  IGetAccessToken,
+} from "@/types/auth_types";
 import { createSlice } from "@reduxjs/toolkit";
 import authService from "./authService";
 
@@ -36,42 +44,42 @@ export const LogoutUserAPI = createAsyncThunkWithHandler(
 
 export const ResetPassword = createAsyncThunkWithHandler(
   "auth/resetPassword",
-  async (passwordData: unknown) => {
+  async (passwordData: IResetPassword) => {
     return await authService.ResetPassword(passwordData);
   }
 );
 
 export const VerifyOrganization = createAsyncThunkWithHandler(
   "auth/verifyOrganization",
-  async (verificationData: unknown) => {
+  async (verificationData: IVerifyOrganization) => {
     return await authService.VerifyOrganization(verificationData);
   }
 );
 
 export const ResendVerification = createAsyncThunkWithHandler(
   "auth/resendVerification",
-  async (emailData: unknown) => {
+  async (emailData: IResendVerification) => {
     return await authService.ResendVerification(emailData);
   }
 );
 
 export const ForgotPassword = createAsyncThunkWithHandler(
   "auth/forgotPassword",
-  async (emailData: unknown) => {
+  async (emailData: IForgotPassword) => {
     return await authService.ForgotPassword(emailData);
   }
 );
 
 export const Register = createAsyncThunkWithHandler(
   "auth/register",
-  async (userData: unknown) => {
+  async (userData: IRegister) => {
     return await authService.Register(userData);
   }
 );
 
 export const GetAccessToken = createAsyncThunkWithHandler(
   "auth/getAccessToken",
-  async (tokenData: unknown) => {
+  async (tokenData: IGetAccessToken) => {
     return await authService.GetAccessToken(tokenData);
   }
 );
@@ -184,8 +192,20 @@ const authSlice = createSlice({
         state.message = action.payload as string;
         state.isSuccess = false;
       })
-     
-
+      .addCase(GetAccessToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.message = "Token refreshed successfully";
+        state.token = action.payload.accessToken;
+      })
+      .addCase(GetAccessToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+        state.isSuccess = false;
+        state.token = null;
+      });
   },
 });
 

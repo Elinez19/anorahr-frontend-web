@@ -1,7 +1,18 @@
 import { createAsyncThunkWithHandler } from "@/services/api/apiHandler";
 import rolesService from "./rolesService";
 import { createSlice } from "@reduxjs/toolkit";
-import { Role } from '@/types/dashboard_types';
+
+// Define Role interface locally to avoid import issues
+interface Role {
+  _id: string;
+  name: string;
+  description?: string;
+  relatedRole: string;
+  createdBy: string;
+  createdAt?: string;
+  updatedAt?: string;
+  isActive?: boolean;
+}
 
 interface RolesState {
   roles: Role[];
@@ -29,25 +40,48 @@ const initialState: RolesState = {
   errorCreateRole: null,
 };
 
-export const getRoles = createAsyncThunkWithHandler("roles/getRoles", async () => {
-  return await rolesService.getRoles();
-});
+export const getRoles = createAsyncThunkWithHandler(
+  "roles/getRoles",
+  async () => {
+    return await rolesService.getRoles();
+  }
+);
 
-export const addRole = createAsyncThunkWithHandler('roles/addRole', async (roleData: { name: string; description?: string; relatedRole: string; createdBy: string }) => {
-  return await rolesService.addRole(roleData);
-});
+export const addRole = createAsyncThunkWithHandler(
+  "roles/addRole",
+  async (roleData: {
+    name: string;
+    description?: string;
+    relatedRole: string;
+    createdBy: string;
+  }) => {
+    return await rolesService.addRole(roleData);
+  }
+);
 
-export const getRelatedRoles = createAsyncThunkWithHandler("roles/getRelatedRoles", async () => {
-  return await rolesService.getRelatedRoles();
-});
+export const getRelatedRoles = createAsyncThunkWithHandler(
+  "roles/getRelatedRoles",
+  async () => {
+    return await rolesService.getRelatedRoles();
+  }
+);
 
-export const getRoleById = createAsyncThunkWithHandler("roles/getRoleById", async (roleId: string) => {
-  return await rolesService.getRoleById(roleId);
-});
+export const getRoleById = createAsyncThunkWithHandler(
+  "roles/getRoleById",
+  async (roleId: string) => {
+    return await rolesService.getRoleById(roleId);
+  }
+);
 
 export const updateRole = createAsyncThunkWithHandler(
-  'roles/updateRole',
-  async ({ roleId, data }: { roleId: string; data: Partial<Omit<Role, '_id' | 'createdAt' | 'updatedAt'>> }) => {
+  "roles/updateRole",
+  async ({
+    roleId,
+    data,
+  }: {
+    roleId: string;
+    data: Partial<Omit<Role, "_id" | "createdAt" | "updatedAt">>;
+  }) => {
     // Convert relatedRole to string if it's an array
     const payload = {
       ...data,
@@ -60,31 +94,44 @@ export const updateRole = createAsyncThunkWithHandler(
 );
 
 // Disable role by ID (soft delete, PATCH isActive: false)
-export const disableRole = createAsyncThunkWithHandler("roles/disableRole", async (roleId: string) => {
-  return await rolesService.disableRole(roleId);
-});
+export const disableRole = createAsyncThunkWithHandler(
+  "roles/disableRole",
+  async (roleId: string) => {
+    return await rolesService.disableRole(roleId);
+  }
+);
 
 export const addBulkRoles = createAsyncThunkWithHandler(
-  'roles/addBulkRoles',
-  async (roles: Omit<Role, '_id' | 'createdAt' | 'updatedAt' | 'isActive'>[]) => {
+  "roles/addBulkRoles",
+  async (
+    roles: Omit<Role, "_id" | "createdAt" | "updatedAt" | "isActive">[]
+  ) => {
     return await rolesService.addBulkRoles(roles);
   }
 );
 
-export const restoreRole = createAsyncThunkWithHandler("roles/restoreRole", async (roleId: string) => {
-  return await rolesService.restoreRole(roleId);
-});
+export const restoreRole = createAsyncThunkWithHandler(
+  "roles/restoreRole",
+  async (roleId: string) => {
+    return await rolesService.restoreRole(roleId);
+  }
+);
 
 export const fetchRelatedRoles = createAsyncThunkWithHandler(
-  'roles/fetchRelatedRoles',
+  "roles/fetchRelatedRoles",
   async () => {
     return await rolesService.getRelatedRoles();
   }
 );
 
 export const createRole = createAsyncThunkWithHandler(
-  'roles/createRole',
-  async (data: { name: string; description?: string; relatedRole: string; createdBy: string }) => {
+  "roles/createRole",
+  async (data: {
+    name: string;
+    description?: string;
+    relatedRole: string;
+    createdBy: string;
+  }) => {
     return await rolesService.addRole(data);
   }
 );
@@ -97,7 +144,7 @@ const rolesSlice = createSlice({
       state.roles = [];
       state.isLoading = false;
       state.isError = false;
-      state.isSuccess = false;  
+      state.isSuccess = false;
       state.message = "";
     },
   },
@@ -110,8 +157,10 @@ const rolesSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.roles = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
-      })  
+        state.roles = Array.isArray(action.payload.data)
+          ? action.payload.data
+          : [action.payload.data];
+      })
       .addCase(getRoles.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
@@ -132,7 +181,7 @@ const rolesSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.payload as string; 
+        state.message = action.payload as string;
       })
       .addCase(getRelatedRoles.pending, (state) => {
         state.isLoading = true;
@@ -156,7 +205,9 @@ const rolesSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.roles = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
+        state.roles = Array.isArray(action.payload.data)
+          ? action.payload.data
+          : [action.payload.data];
       })
       .addCase(getRoleById.rejected, (state, action) => {
         state.isLoading = false;
@@ -172,7 +223,9 @@ const rolesSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         const updated = action.payload.data;
-        state.roles = state.roles.map(role => role._id === updated._id ? updated : role);
+        state.roles = state.roles.map((role) =>
+          role._id === updated._id ? updated : role
+        );
         state.message = action.payload.message || "Role updated successfully";
       })
       .addCase(updateRole.rejected, (state, action) => {
@@ -191,7 +244,7 @@ const rolesSlice = createSlice({
         state.isSuccess = true;
         const disabledRole = action.payload.data;
         // Update the specific role in the array
-        state.roles = state.roles.map(role => 
+        state.roles = state.roles.map((role) =>
           role._id === disabledRole._id ? disabledRole : role
         );
         state.message = "Role disabled successfully";
@@ -212,7 +265,8 @@ const rolesSlice = createSlice({
         if (Array.isArray(action.payload.data.roles)) {
           state.roles = [...state.roles, ...action.payload.data.roles];
         }
-        state.message = action.payload.message || 'Bulk roles added successfully';
+        state.message =
+          action.payload.message || "Bulk roles added successfully";
       })
       .addCase(addBulkRoles.rejected, (state, action) => {
         state.isLoading = false;
@@ -230,7 +284,7 @@ const rolesSlice = createSlice({
         state.isSuccess = true;
         const restoredRole = action.payload.data;
         // Update the specific role in the array
-        state.roles = state.roles.map(role => 
+        state.roles = state.roles.map((role) =>
           role._id === restoredRole._id ? restoredRole : role
         );
         state.message = "Role restored successfully";

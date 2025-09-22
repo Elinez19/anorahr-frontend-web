@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun, Plus } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppSidebar } from "@/components/custom/app-sidebar";
 import {
@@ -46,23 +46,39 @@ export default function RolesPage() {
     document.documentElement.classList.toggle("dark");
   };
 
-  const handleEditRole = (role: any) => {
+  const handleEditRole = (role: {
+    id: string;
+    name: string;
+    status: string;
+  }) => {
     console.log("Edit role:", role);
   };
 
-  const handleDeleteRole = (role: any) => {
+  const handleDeleteRole = (role: {
+    id: string;
+    name: string;
+    status: string;
+  }) => {
     console.log("Delete role:", role);
   };
 
-  const handleViewRole = (role: any) => {
+  const handleViewRole = (role: {
+    id: string;
+    name: string;
+    status: string;
+  }) => {
     console.log("View role:", role);
   };
 
-  const handleDataChange = (newData: any[]) => {
+  const handleDataChange = (
+    _newData: { id: string; name: string; status: string }[]
+  ) => {
     // Handle data changes
   };
 
-  const handleDeleteRows = (rows: any[]) => {
+  const handleDeleteRows = (
+    rows: { id: string; name: string; status: string }[]
+  ) => {
     // Handle bulk delete
   };
 

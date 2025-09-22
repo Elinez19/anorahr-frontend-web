@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,21 +10,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import AuthLayout from "@/layout/AuthLayout/AuthLayout";
-import authService from "@/services/features/auth/authService";
+import { useLogin } from "@/hooks/useAuth";
 import type { ILogin } from "@/types/auth_types";
-
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginFormData } from "@/helpers/auth.schemas";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login, reset, isLoading, isError, isSuccess, message, token } =
+    useLogin();
 
   const {
     register,
@@ -35,27 +28,33 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    setError(null);
+  // Reset auth state on component mount
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
-    try {
-      const loginData: ILogin = {
-        email: data.email,
-        password: data.password,
-      };
-
-      await authService.Login(loginData);
+  // Handle successful login
+  useEffect(() => {
+    if (isSuccess && token) {
       toast.success("Login successful! Welcome back.");
       navigate("/dashboard");
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message || "Login failed. Please try again.";
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
+  }, [isSuccess, token, navigate]);
+
+  // Handle login errors
+  useEffect(() => {
+    if (isError && message) {
+      toast.error(message);
+    }
+  }, [isError, message]);
+
+  const onSubmit = async (data: LoginFormData) => {
+    const loginData: ILogin = {
+      email: data.email,
+      password: data.password,
+    };
+
+    login(loginData);
   };
 
   return (
@@ -109,9 +108,9 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {error && (
+        {isError && message && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
 

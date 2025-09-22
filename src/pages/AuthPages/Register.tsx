@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,60 +10,93 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import AuthLayout from "@/layout/AuthLayout/AuthLayout";
-import authService from "@/services/features/auth/authService";
-
-const registerSchema = z.object({
-  firstName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  acceptTerms: z
-    .boolean()
-    .refine((val) => val === true, "You must accept the terms and conditions"),
-});
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+import { useRegister } from "@/hooks/useAuth";
+import type { IRegister } from "@/types/auth_types";
+import {
+  completeRegistrationSchema,
+  type CompleteRegistrationFormData,
+} from "@/helpers/auth.schemas";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+  const {
+    register: registerUser,
+    reset,
+    isLoading,
+    isError,
+    isSuccess,
+    message,
+  } = useRegister();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+    trigger,
+  } = useForm<CompleteRegistrationFormData>({
+    resolver: zodResolver(completeRegistrationSchema),
+    mode: "onChange",
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const registerData = {
-        firstName: data.firstName,
-        lastName: data.firstName, // Using firstName as lastName for simplicity
-        email: data.email,
-        companyName: "Default Company", // Default company name
-        password: data.password,
-      };
-
-      await authService.Register(registerData);
-      toast.success(
-        "Registration successful! Please check your email to verify your account."
-      );
-      navigate("/auth/registration-success");
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message ||
-        "Registration failed. Please try again.";
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
+  const nextStep = async () => {
+    if (currentStep === 1) {
+      // Validate step 1 fields
+      const isValid = await trigger([
+        "companyName",
+        "email",
+        "password",
+        "confirmPassword",
+      ]);
+      if (isValid) {
+        setCurrentStep(2);
+      }
     }
+  };
+
+  const prevStep = () => {
+    setCurrentStep(1);
+  };
+
+  // Reset auth state on component mount
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
+  // Handle successful registration
+  useEffect(() => {
+    if (isSuccess && message) {
+      toast.success(message);
+      navigate("/auth/registration-success");
+    }
+  }, [isSuccess, message, navigate]);
+
+  // Handle registration errors
+  useEffect(() => {
+    if (isError && message) {
+      toast.error(message);
+    }
+  }, [isError, message]);
+
+  const onSubmit = async (data: CompleteRegistrationFormData) => {
+    const registerData: IRegister = {
+      companyName: data.companyName,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      phone: data.phone,
+      address: data.address,
+      logo: data.logo || undefined,
+      website: data.website || undefined,
+      primaryContact: {
+        name: data.primaryContactName,
+        phone: data.primaryContactPhone,
+        email: data.primaryContactEmail,
+      },
+    };
+
+    registerUser(registerData);
   };
 
   return (
@@ -120,121 +152,386 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        {error && (
+        {isError && message && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
 
+        {/* Step Indicator */}
+        <div className="flex items-center justify-center space-x-4 mb-8">
+          <div
+            className={`flex items-center ${
+              currentStep >= 1 ? "text-mint-600" : "text-gray-400"
+            }`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                currentStep >= 1
+                  ? "bg-mint-500 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
+            >
+              1
+            </div>
+            <span className="ml-2 text-sm font-medium">Account Details</span>
+          </div>
+          <div
+            className={`w-8 h-0.5 ${
+              currentStep >= 2 ? "bg-mint-500" : "bg-gray-200"
+            }`}
+          ></div>
+          <div
+            className={`flex items-center ${
+              currentStep >= 2 ? "text-mint-600" : "text-gray-400"
+            }`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                currentStep >= 2
+                  ? "bg-mint-500 text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
+            >
+              2
+            </div>
+            <span className="ml-2 text-sm font-medium">Company Info</span>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Label
-              htmlFor="firstName"
-              className="text-sm font-medium text-gray-700"
-            >
-              Name
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              placeholder="Enter your name"
-              className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
-              {...register("firstName")}
-              disabled={isLoading}
-            />
-            {errors.firstName && (
-              <p className="text-sm text-red-600 mt-1">
-                {errors.firstName.message}
-              </p>
-            )}
-          </div>
+          {/* Step 1: Account Details */}
+          {currentStep === 1 && (
+            <>
+              <div>
+                <Label
+                  htmlFor="companyName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Company Name
+                </Label>
+                <Input
+                  id="companyName"
+                  type="text"
+                  placeholder="Enter your company name"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("companyName")}
+                  disabled={isLoading}
+                />
+                {errors.companyName && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.companyName.message}
+                  </p>
+                )}
+              </div>
 
-          <div>
-            <Label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-700"
-            >
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
-              {...register("email")}
-              disabled={isLoading}
-            />
-            {errors.email && (
-              <p className="text-sm text-red-600 mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+              <div>
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("email")}
+                  disabled={isLoading}
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
 
-          <div>
-            <Label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-700"
-            >
-              Password
-            </Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Create a password"
-                className="h-12 bg-gray-50 border-gray-200 focus:bg-white pr-10"
-                {...register("password")}
-                disabled={isLoading}
-              />
-              <button
+              <div>
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create a password"
+                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white pr-10"
+                    {...register("password")}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    disabled={isLoading}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    className="h-12 bg-gray-50 border-gray-200 focus:bg-white pr-10"
+                    {...register("confirmPassword")}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    disabled={isLoading}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              <Button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                onClick={nextStep}
+                className="w-full h-12 bg-mint-500 hover:bg-mint-600 text-white font-medium"
                 disabled={isLoading}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-sm text-red-600 mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="acceptTerms"
-              {...register("acceptTerms")}
-              disabled={isLoading}
-            />
-            <Label htmlFor="acceptTerms" className="text-sm text-gray-600">
-              I agree to the{" "}
-              <Link to="/terms" className="text-mint-600 hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link to="/privacy" className="text-mint-600 hover:underline">
-                Privacy Policy
-              </Link>
-            </Label>
-          </div>
-          {errors.acceptTerms && (
-            <p className="text-sm text-red-600">{errors.acceptTerms.message}</p>
+                Next Step
+              </Button>
+            </>
           )}
 
-          <Button
-            type="submit"
-            className="w-full h-12 bg-mint-500 hover:bg-mint-600 text-white font-medium"
-            disabled={isLoading}
-          >
-            {isLoading ? "Creating Account..." : "Sign up"}
-          </Button>
+          {/* Step 2: Company Information */}
+          {currentStep === 2 && (
+            <>
+              <div>
+                <Label
+                  htmlFor="phone"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Company Phone
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+1 (555) 123-4567"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("phone")}
+                  disabled={isLoading}
+                />
+                {errors.phone && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="address"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Company Address
+                </Label>
+                <Input
+                  id="address"
+                  type="text"
+                  placeholder="123 Business Avenue, Tech Park, Suite 500, New York, NY 10001"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("address")}
+                  disabled={isLoading}
+                />
+                {errors.address && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.address.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="logo"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Company Logo URL (Optional)
+                </Label>
+                <Input
+                  id="logo"
+                  type="url"
+                  placeholder="https://example.com/logos/company.png"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("logo")}
+                  disabled={isLoading}
+                />
+                {errors.logo && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.logo.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="website"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Company Website (Optional)
+                </Label>
+                <Input
+                  id="website"
+                  type="url"
+                  placeholder="https://company.com"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("website")}
+                  disabled={isLoading}
+                />
+                {errors.website && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.website.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="primaryContactName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Primary Contact Name
+                </Label>
+                <Input
+                  id="primaryContactName"
+                  type="text"
+                  placeholder="John Smith"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("primaryContactName")}
+                  disabled={isLoading}
+                />
+                {errors.primaryContactName && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.primaryContactName.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="primaryContactPhone"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Primary Contact Phone
+                </Label>
+                <Input
+                  id="primaryContactPhone"
+                  type="tel"
+                  placeholder="+1 (555) 987-6543"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("primaryContactPhone")}
+                  disabled={isLoading}
+                />
+                {errors.primaryContactPhone && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.primaryContactPhone.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="primaryContactEmail"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Primary Contact Email
+                </Label>
+                <Input
+                  id="primaryContactEmail"
+                  type="email"
+                  placeholder="john.smith@company.com"
+                  className="h-12 bg-gray-50 border-gray-200 focus:bg-white"
+                  {...register("primaryContactEmail")}
+                  disabled={isLoading}
+                />
+                {errors.primaryContactEmail && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.primaryContactEmail.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="acceptTerms"
+                  {...register("acceptTerms", {
+                    setValueAs: (value) => value === "on" || value === true,
+                  })}
+                  disabled={isLoading}
+                />
+                <Label htmlFor="acceptTerms" className="text-sm text-gray-600">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-mint-600 hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-mint-600 hover:underline">
+                    Privacy Policy
+                  </Link>
+                </Label>
+              </div>
+              {errors.acceptTerms && (
+                <p className="text-sm text-red-600">
+                  {errors.acceptTerms.message}
+                </p>
+              )}
+
+              <div className="flex space-x-4">
+                <Button
+                  type="button"
+                  onClick={prevStep}
+                  variant="outline"
+                  className="flex-1 h-12 border-gray-200 text-gray-700 hover:bg-gray-50"
+                  disabled={isLoading}
+                >
+                  Previous
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 h-12 bg-mint-500 hover:bg-mint-600 text-white font-medium"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating Account..." : "Sign up"}
+                </Button>
+              </div>
+            </>
+          )}
         </form>
 
         <div className="text-center">
